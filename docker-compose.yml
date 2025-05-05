@@ -1,0 +1,26 @@
+version: "3.8"
+
+services:
+  app:
+    container_name: nativo-landing-page
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - /app/.next
+    environment:
+      - NODE_ENV=development
+      - WATCHPACK_POLLING=true
+    # command: npm run dev
+    restart: unless-stopped
+    stdin_open: true # Enable interactive mode
+    tty: true # Enable terminal
+    # networks:
+    #   - sail
+# networks:
+#   sail:
+#     external: true
