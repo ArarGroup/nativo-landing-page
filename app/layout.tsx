@@ -1,30 +1,32 @@
-import type React from "react";
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import "./globals.css";
-// import { ThemeProvider } from "@/components/theme-provider"
+import type React from "react"
+import type { Metadata } from "next"
+import { Poppins } from "next/font/google"
+import "./globals.css"
+import { Header } from "@/components/header"
+import { Footer } from "@/components/footer"
 
-const inter = Inter({ subsets: ["latin"] });
+const poppins = Poppins({ subsets: ["latin"], weight: ["400", "500", "600", "700"] })
 
 export const metadata: Metadata = {
-	title: "NativoOne - Solución ERP Integral para Empresas",
-	description:
-		"NativoOne ofrece una solución ERP integral que automatiza sus procesos, simplifica la gestión fiscal y potencia el crecimiento de su empresa.",
-	generator: "v0.dev",
-};
+  title: "Solución ERP Integral para Empresas | 1NativoOne",
+  description:
+    "1NativoOne ofrece una solución ERP integral que automatiza sus procesos, simplifica la gestión fiscal y potencia el crecimiento de su empresa.",
+}
 
 export default function RootLayout({
-	children,
+  children,
 }: Readonly<{
-	children: React.ReactNode;
+  children: React.ReactNode
 }>) {
-	return (
-		<html lang="es" suppressHydrationWarning>
-			<body className={inter.className}>
-				{/* <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange> */}
-				{children}
-				{/* </ThemeProvider> */}
-			</body>
-		</html>
-	);
+  return (
+    <html lang="es" suppressHydrationWarning>
+      <body className={poppins.className}>
+        <div className="relative flex min-h-screen flex-col">
+          <Header />
+          <main className="flex-1">{children}</main>
+          <Footer />
+        </div>
+      </body>
+    </html>
+  )
 }
