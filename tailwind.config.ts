@@ -19,6 +19,11 @@ const config = {
     },
     extend: {
       colors: {
+        nativo: {
+          celestial: "#1F98EA",
+          sapphire: "#3255AA",
+          polynesian: "#2D50A4",
+        },
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
