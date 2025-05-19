@@ -6,16 +6,8 @@ import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Menu, X } from "lucide-react"
 import { MainNav } from "@/components/main-nav"
-import { MobileMenu } from "@/components/mobile-menu"
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion"
-import { cn } from "@/lib/utils"
+import { MobileNav } from "@/components/mobile-nav"
 
-// You can customize these navigation items
 export function Header() {
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null)
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false)
@@ -236,127 +228,7 @@ export function Header() {
         )} */}
       </header>
 
-      {/* Mobile Menu */}
-
-      {/* Mobile Menu */}
-      <div
-        className={cn(
-          "fixed inset-x-0 top-16 z-50 h-[calc(100vh-4rem)] bg-background md:hidden overflow-y-auto",
-          isMenuOpen ? "opacity-100 visible" : "opacity-0 invisible"
-        )}
-      >
-        <div className="p-6">
-          <nav className="flex flex-col gap-4">
-            <Accordion type="single" collapsible className="w-full">
-              <AccordionItem value="features" className="border-b">
-                <AccordionTrigger className="text-lg font-medium py-4">Features</AccordionTrigger>
-                <AccordionContent>
-                  <div className="flex flex-col space-y-2 pl-4">
-                    <Link
-                      href="#feature-1"
-                      className="text-base py-2 transition-colors hover:text-primary"
-                      onClick={() => setIsMenuOpen(false)}
-                    >
-                      Feature 1
-                    </Link>
-                    <Link
-                      href="#feature-2"
-                      className="text-base py-2 transition-colors hover:text-primary"
-                      onClick={() => setIsMenuOpen(false)}
-                    >
-                      Feature 2
-                    </Link>
-                    <Link
-                      href="#feature-3"
-                      className="text-base py-2 transition-colors hover:text-primary"
-                      onClick={() => setIsMenuOpen(false)}
-                    >
-                      Feature 3
-                    </Link>
-                  </div>
-                </AccordionContent>
-              </AccordionItem>
-
-              <AccordionItem value="resources" className="border-b">
-                <AccordionTrigger className="text-lg font-medium py-4">Resources</AccordionTrigger>
-                <AccordionContent>
-                  <div className="flex flex-col space-y-2 pl-4">
-                    <Link
-                      href="#blog"
-                      className="text-base py-2 transition-colors hover:text-primary"
-                      onClick={() => setIsMenuOpen(false)}
-                    >
-                      Blog
-                    </Link>
-                    <Link
-                      href="#documentation"
-                      className="text-base py-2 transition-colors hover:text-primary"
-                      onClick={() => setIsMenuOpen(false)}
-                    >
-                      Documentation
-                    </Link>
-                    <Link
-                      href="#guides"
-                      className="text-base py-2 transition-colors hover:text-primary"
-                      onClick={() => setIsMenuOpen(false)}
-                    >
-                      Guides
-                    </Link>
-                  </div>
-                </AccordionContent>
-              </AccordionItem>
-            </Accordion>
-
-            <Link
-              href="#pricing"
-              className="text-lg font-medium py-4 border-b transition-colors hover:text-primary"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Pricing
-            </Link>
-            <Link
-              href="#about"
-              className="text-lg font-medium py-4 border-b transition-colors hover:text-primary"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              About
-            </Link>
-            <Link
-              href="#contact"
-              className="text-lg font-medium py-4 border-b transition-colors hover:text-primary"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Contact
-            </Link>
-          </nav>
-          <div className="flex flex-col gap-2 mt-6">
-            <Button variant="outline" className="w-full" onClick={() => setIsMenuOpen(false)}>
-              Log in
-            </Button>
-            <Button className="w-full" onClick={() => setIsMenuOpen(false)}>
-              Sign up
-            </Button>
-          </div>
-        </div>
-      </div>
-
-      {/* Mobile Menu Overlay */}
-      {/* {isMenuOpen && (
-        <div
-          className="fixed inset-0 top-16 z-40 bg-black/50 backdrop-blur-sm md:hidden"
-          onClick={() => setIsMenuOpen(false)}
-        />
-      )} */}
-
-      {/* Overlay */}
-      {/* {(activeDropdown && !isMenuOpen) && (
-        <div
-          className="fixed inset-0 top-16 bg-black bg-opacity-50 z-40 transition-opacity duration-300 ease-in-out"
-          onClick={() => setActiveDropdown(null)}
-          aria-hidden="true"
-        />
-      )} */}
-      {/* Products Dropdown */}
+      <MobileNav isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} />
     </>
   )
 }
