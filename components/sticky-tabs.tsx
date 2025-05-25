@@ -56,13 +56,13 @@ export default function StickyTabs() {
   return (
     <div
       className={cn(
-        "hidden md:block w-full transition-all duration-300 z-30",
+        "hidden md:block w-full transition-all duration-300 z-20",
         isSticky ? "fixed top-16 left-0" : "relative"
       )}
     >
-      <div className="py-3">
-        <div className="flex justify-center overflow-x-auto">
-          <div className="flex space-x-1 p-1 rounded-full bg-white shadow-sm border">
+      <div className="py-1">
+        <div className="flex justify-center overflow-x-auto py-2">
+          <div className="flex space-x-1 lg:space-x-4 p-1 lg:px-6 rounded-full bg-white shadow-sm border">
             {tabs.map((tab) => (
               <Link
                 key={tab.href}

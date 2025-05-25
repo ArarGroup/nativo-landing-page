@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Menu, X } from "lucide-react"
 import { MainNav } from "@/components/main-nav"
 import { MobileNav } from "@/components/mobile-nav"
+import { DropdownMenu } from "@/components/dropdown-menu"
 
 export function Header() {
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null)
@@ -15,37 +16,12 @@ export function Header() {
   const headerRef = useRef<HTMLDivElement>(null)
 
   const toggleDropdown = (dropdown: string) => {
-    console.log(dropdown)
     if (activeDropdown === dropdown) {
       setActiveDropdown(null)
     } else {
       setActiveDropdown(dropdown)
     }
   }
-
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        activeDropdown &&
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node) &&
-        headerRef.current &&
-        !headerRef.current.contains(event.target as Node)
-      ) {
-        setActiveDropdown(null)
-      }
-    }
-
-    // Add event listener when dropdown is open
-    if (activeDropdown) {
-      document.addEventListener("mousedown", handleClickOutside)
-    }
-
-    // Clean up event listener
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside)
-    }
-  }, [activeDropdown])
 
   // Prevent body scroll when dropdown is open
   useEffect(() => {
@@ -62,10 +38,7 @@ export function Header() {
 
   return (
     <>
-      <header
-        ref={headerRef}
-        className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60"
-      >
+      <header ref={headerRef} className="sticky top-0 z-50 w-full border-b bg-white">
         <div className="container flex h-16 items-center justify-between">
           <div className="flex items-center">
             <Link href="/" className="flex items-center space-x-2">
@@ -117,116 +90,8 @@ export function Header() {
             />
           </div>
         </div>
-
-        {/* {activeDropdown === "products" && (
-          <div
-            ref={dropdownRef}
-            className="absolute top-16 left-0 w-full bg-white border-b shadow-md z-50 animate-fadeIn"
-          >
-            <div className="py-8">
-              <div className="flex justify-between items-start">
-                <div className="flex-1 max-w-5xl">
-                  <div className="grid grid-cols-3 gap-8">
-                    <div>
-                      <h3 className="text-xs font-semibold text-gray-500 mb-4">
-                        FINANCIAL MANAGEMENT
-                      </h3>
-                      <ul className="space-y-4">
-                        <li>
-                          <Link href="#" className="block" onClick={() => setActiveDropdown(null)}>
-                            <div className="font-medium text-gray-900">Accounting</div>
-                            <div className="text-sm text-gray-500">
-                              Complete accounting solution
-                            </div>
-                          </Link>
-                        </li>
-                        <li>
-                          <Link href="#" className="block" onClick={() => setActiveDropdown(null)}>
-                            <div className="font-medium text-gray-900">Invoicing</div>
-                            <div className="text-sm text-gray-500">
-                              Professional invoicing tools
-                            </div>
-                          </Link>
-                        </li>
-                        <li>
-                          <Link href="#" className="block" onClick={() => setActiveDropdown(null)}>
-                            <div className="font-medium text-gray-900">Expense Tracking</div>
-                            <div className="text-sm text-gray-500">
-                              Simplified expense management
-                            </div>
-                          </Link>
-                        </li>
-                      </ul>
-                    </div>
-
-                    <div>
-                      <h3 className="text-xs font-semibold text-gray-500 mb-4">OPERATIONS</h3>
-                      <ul className="space-y-4">
-                        <li>
-                          <Link href="#" className="block" onClick={() => setActiveDropdown(null)}>
-                            <div className="font-medium text-gray-900">Inventory</div>
-                            <div className="text-sm text-gray-500">Inventory management system</div>
-                          </Link>
-                        </li>
-                        <li>
-                          <Link href="#" className="block" onClick={() => setActiveDropdown(null)}>
-                            <div className="font-medium text-gray-900">CRM</div>
-                            <div className="text-sm text-gray-500">
-                              Customer relationship management
-                            </div>
-                          </Link>
-                        </li>
-                        <li>
-                          <Link href="#" className="block" onClick={() => setActiveDropdown(null)}>
-                            <div className="font-medium text-gray-900">Project Management</div>
-                            <div className="text-sm text-gray-500">Task and project tracking</div>
-                          </Link>
-                        </li>
-                      </ul>
-                    </div>
-
-                    <div>
-                      <h3 className="text-xs font-semibold text-gray-500 mb-4">REPORTING</h3>
-                      <ul className="space-y-4">
-                        <li>
-                          <Link href="#" className="block" onClick={() => setActiveDropdown(null)}>
-                            <div className="font-medium text-gray-900">Analytics</div>
-                            <div className="text-sm text-gray-500">Business intelligence tools</div>
-                          </Link>
-                        </li>
-                        <li>
-                          <Link href="#" className="block" onClick={() => setActiveDropdown(null)}>
-                            <div className="font-medium text-gray-900">Financial Reports</div>
-                            <div className="text-sm text-gray-500">
-                              Comprehensive financial reporting
-                            </div>
-                          </Link>
-                        </li>
-                        <li>
-                          <Link href="#" className="block" onClick={() => setActiveDropdown(null)}>
-                            <div className="font-medium text-gray-900">Dashboards</div>
-                            <div className="text-sm text-gray-500">
-                              Customizable business dashboards
-                            </div>
-                          </Link>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-
-                <button
-                  onClick={() => setActiveDropdown(null)}
-                  className="text-gray-500 hover:text-gray-700"
-                  aria-label="Close menu"
-                >
-                  <X className="h-5 w-5" />
-                </button>
-              </div>
-            </div>
-          </div>
-        )} */}
       </header>
+      {activeDropdown && <DropdownMenu onClose={() => setActiveDropdown(null)} />}
 
       <MobileNav isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} />
     </>

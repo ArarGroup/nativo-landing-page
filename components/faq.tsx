@@ -1,5 +1,10 @@
 import { Badge } from "@/components/ui/badge"
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion"
 
 const faqs = [
   {
@@ -31,27 +36,27 @@ const faqs = [
 
 export function FAQ() {
   return (
-    <section className="py-20 md:py-28 bg-white">
-      <div className="container px-4 md:px-6">
-        <div className="flex flex-col items-center justify-center space-y-4 text-center mb-12">
-          <Badge className="mb-2">Preguntas Frecuentes</Badge>
-          <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl">Respuestas a sus dudas</h2>
-          <p className="max-w-[700px] text-muted-foreground md:text-xl/relaxed">
-            Encuentre respuestas a las preguntas más comunes sobre NativoOne.
-          </p>
-        </div>
-
-        <div className="mx-auto max-w-3xl">
-          <Accordion type="single" collapsible className="w-full">
-            {faqs.map((faq, index) => (
-              <AccordionItem key={index} value={`item-${index}`}>
-                <AccordionTrigger className="text-left font-medium">{faq.question}</AccordionTrigger>
-                <AccordionContent className="text-muted-foreground">{faq.answer}</AccordionContent>
-              </AccordionItem>
-            ))}
-          </Accordion>
-        </div>
+    <section className="w-full max-w-4xl mx-auto py-16 px-4">
+      <div className="text-center mb-12">
+        <h2 className="text-3xl font-bold tracking-tight mb-4">Preguntas frecuentes</h2>
+        <p className="text-muted-foreground">
+          Encuentre respuestas a las preguntas más comunes sobre nuestro sistema
+        </p>
       </div>
+      <Accordion type="single" collapsible className="w-full space-y-4">
+        {faqs.map((faq, index) => (
+          <AccordionItem
+            className="border rounded-lg px-6 py-2"
+            key={index}
+            value={`item-${index}`}
+          >
+            <AccordionTrigger className="text-left text-gray-700 hover:no-underline hover:text">
+              {faq.question}
+            </AccordionTrigger>
+            <AccordionContent className="text-muted-foreground">{faq.answer}</AccordionContent>
+          </AccordionItem>
+        ))}
+      </Accordion>
     </section>
   )
 }

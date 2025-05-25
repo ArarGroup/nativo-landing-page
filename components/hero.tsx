@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button"
 import { CanvasNetworkBackground } from "@/components/network-background"
 import { ArrowRight } from "lucide-react"
 
-export function HeroV2() {
+export function Hero() {
   return (
     <div className="relative overflow-hidden">
       {/* Canvas Background */}
@@ -55,7 +55,7 @@ export function HeroV2() {
                 className="object-contain"
                 priority
               />
-              <div className="absolute -top-6 -right-6 w-24 h-24 rounded-xl bg-primary/10 backdrop-blur-sm border shadow-lg hidden md:block">
+              <div className="absolute -top-6 -right-6 w-24 h-24 rounded-xl hidden md:block">
                 <Image
                   src="/frame_generic_light.png"
                   alt="ERP Feature"
@@ -63,7 +63,7 @@ export function HeroV2() {
                   className="object-contain rounded-xl"
                 />
               </div>
-              <div className="absolute -bottom-6 -right-6 w-32 h-32 rounded-xl bg-primary/10 backdrop-blur-sm border shadow-lg hidden md:block">
+              <div className="absolute -bottom-6 -right-6 w-32 h-32 rounded-xl hidden md:block">
                 <Image
                   src="/frame_generic_light.png"
                   alt="ERP Feature"

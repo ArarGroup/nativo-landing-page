@@ -1,5 +1,4 @@
-import { Hero } from "@/components/hero/hero"
-import { HeroV2 } from "@/components/hero/hero-v2"
+import { Hero } from "@/components/hero"
 import StickyTabs from "@/components/sticky-tabs"
 import { LogoCloud } from "@/components/logo-cloud"
 import { Features } from "@/components/features"
@@ -13,17 +12,19 @@ import { FAQ } from "@/components/faq"
 export default function LandingPage() {
   return (
     <div className="flex flex-col min-h-screen">
-      <HeroV2 />
-      <StickyTabs />
       <Hero />
+      <StickyTabs />
+      <Features />
+      <FAQ />
+      <Pricing />
+      <Contact />
       {/* <LogoCloud />
 				<Features />
 				<Experience />
 				<Modules />
-				<Pricing />
 				<Testimonials />
 				<Contact />
-				<FAQ /> */}
+				 */}
     </div>
   )
 }

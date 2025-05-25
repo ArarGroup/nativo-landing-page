@@ -2,6 +2,7 @@
 
 import Link from "next/link"
 import { ChevronDown } from "lucide-react"
+import { cn } from "@/lib/utils"
 
 interface NavItemProps {
   href: string
@@ -47,7 +48,7 @@ interface MainNavProps {
 
 export function MainNav({ activeDropdown, toggleDropdown, className }: MainNavProps) {
   return (
-    <nav className={className}>
+    <nav className={cn(className)}>
       <DropdownButton
         label="Productos"
         isActive={activeDropdown === "products"}

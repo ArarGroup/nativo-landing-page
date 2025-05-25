@@ -5,7 +5,7 @@ import { Facebook, Twitter, Instagram, Linkedin, Github } from "lucide-react"
 
 export function Footer() {
   return (
-    <footer className="bg-background border-t">
+    <footer className="bg-slate-50 border-t">
       <div className="container py-12 md:py-16">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Company Info */}

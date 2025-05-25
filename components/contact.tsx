@@ -1,134 +1,111 @@
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { CheckCircle } from "lucide-react"
+"use client"
 
-const contactBenefits = [
-  "Demostración personalizada según sus necesidades",
-  "Análisis de su situación actual",
-  "Propuesta de implementación a medida",
-  "Consultoría inicial sin costo",
-]
+import type React from "react"
+
+import { useState } from "react"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Textarea } from "@/components/ui/textarea"
+import { Label } from "@/components/ui/label"
+import { Card, CardContent } from "@/components/ui/card"
+import { Mail, Phone, CheckCircle } from "lucide-react"
 
 export function Contact() {
+  const [formState, setFormState] = useState<"idle" | "submitting" | "success">("idle")
+  const [formData, setFormData] = useState({ name: "", email: "", message: "" })
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }))
+  }
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    setFormState("submitting")
+    setTimeout(() => setFormState("success"), 1000)
+  }
+
   return (
-    <section id="contacto" className="py-20 md:py-28 bg-slate-900 text-white">
-      <div className="container px-4 md:px-6">
-        <div className="grid md:grid-cols-2 gap-10 items-center">
+    <section id="contact" className="py-20 relative">
+      {/* Background overlay that covers only half */}
+      <div className="absolute inset-0 bg-slate-50 h-1/2" />
+
+      <div className="container px-4 mx-auto max-w-4xl relative">
+        <div className="grid md:grid-cols-2 gap-8 items-center">
           <div>
-            <Badge className="mb-4 bg-white/10 hover:bg-white/20 text-white">Comience Hoy</Badge>
             <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl mb-4">
-              Transforme su negocio con NativoOne
+              Contáctenos
             </h2>
-            <p className="text-slate-300 md:text-xl mb-6">
-              Solicite una demostración personalizada y descubra cómo nuestro ERP puede optimizar sus procesos y
-              potenciar el crecimiento de su empresa.
+            <p className="text-muted-foreground mb-6">
+              ¿Listo para transformar las operaciones de su empresa? Contáctenos hoy.
             </p>
-            <ul className="space-y-2 mb-6">
-              {contactBenefits.map((item, i) => (
-                <li key={i} className="flex items-start">
-                  <CheckCircle className="mr-2 h-5 w-5 text-green-400 shrink-0 mt-0.5" />
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
+
+            <div className="space-y-4">
+              <div className="flex items-center space-x-3">
+                <Mail className="h-5 w-5 text-slate-700" />
+                <p className="text-muted-foreground">contacto@1nativoone.com</p>
+              </div>
+              <div className="flex items-center space-x-3">
+                <Phone className="h-5 w-5 text-slate-700" />
+                <p className="text-muted-foreground">+57 (555) 123-4567</p>
+              </div>
+            </div>
           </div>
-          <div>
-            <Card className="border-0">
-              <CardHeader>
-                <CardTitle>Solicite una Demostración</CardTitle>
-                <CardDescription>
-                  Complete el formulario y nos pondremos en contacto en menos de 24 horas.
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <form className="space-y-4">
-                  <div className="grid md:grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <label
-                        htmlFor="nombre"
-                        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                      >
-                        Nombre
-                      </label>
-                      <input
-                        id="nombre"
-                        className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                        placeholder="Ingrese su nombre"
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <label
-                        htmlFor="apellido"
-                        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                      >
-                        Apellido
-                      </label>
-                      <input
-                        id="apellido"
-                        className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                        placeholder="Ingrese su apellido"
-                      />
-                    </div>
-                  </div>
+
+          <Card className="border-slate-200 shadow-sm">
+            <CardContent className="p-6">
+              {formState === "success" ? (
+                <div className="text-center py-6">
+                  <CheckCircle className="h-12 w-12 text-green-500 mx-auto mb-4" />
+                  <h3 className="text-lg font-medium mb-2">¡Mensaje enviado!</h3>
+                  <p className="text-slate-500">Nos pondremos en contacto pronto.</p>
+                </div>
+              ) : (
+                <form onSubmit={handleSubmit} className="space-y-4">
                   <div className="space-y-2">
-                    <label
-                      htmlFor="empresa"
-                      className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                    >
-                      Empresa
-                    </label>
-                    <input
-                      id="empresa"
-                      className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                      placeholder="Nombre de su empresa"
+                    <Label htmlFor="name">Nombre</Label>
+                    <Input
+                      id="name"
+                      name="name"
+                      placeholder="Su nombre"
+                      required
+                      value={formData.name}
+                      onChange={handleChange}
                     />
                   </div>
+
                   <div className="space-y-2">
-                    <label
-                      htmlFor="email"
-                      className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                    >
-                      Correo Electrónico
-                    </label>
-                    <input
+                    <Label htmlFor="email">Correo electrónico</Label>
+                    <Input
                       id="email"
+                      name="email"
                       type="email"
-                      className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                      placeholder="correo@ejemplo.com"
+                      placeholder="su@correo.com"
+                      required
+                      value={formData.email}
+                      onChange={handleChange}
                     />
                   </div>
+
                   <div className="space-y-2">
-                    <label
-                      htmlFor="telefono"
-                      className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                    >
-                      Teléfono
-                    </label>
-                    <input
-                      id="telefono"
-                      className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                      placeholder="Su número de contacto"
+                    <Label htmlFor="message">Mensaje</Label>
+                    <Textarea
+                      id="message"
+                      name="message"
+                      placeholder="Cuéntenos sobre sus necesidades empresariales..."
+                      rows={3}
+                      required
+                      value={formData.message}
+                      onChange={handleChange}
                     />
                   </div>
-                  <div className="space-y-2">
-                    <label
-                      htmlFor="mensaje"
-                      className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                    >
-                      Mensaje
-                    </label>
-                    <textarea
-                      id="mensaje"
-                      className="flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                      placeholder="Cuéntenos sobre sus necesidades específicas"
-                    />
-                  </div>
-                  <Button className="w-full">Solicitar Demostración</Button>
+
+                  <Button type="submit" className="w-full" disabled={formState === "submitting"}>
+                    {formState === "submitting" ? "Enviando..." : "Enviar mensaje"}
+                  </Button>
                 </form>
-              </CardContent>
-            </Card>
-          </div>
+              )}
+            </CardContent>
+          </Card>
         </div>
       </div>
     </section>
