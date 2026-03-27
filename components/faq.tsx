@@ -15,7 +15,7 @@ const faqs = [
   {
     question: "¿Cómo se manejan las actualizaciones fiscales?",
     answer:
-      "NativoOne se mantiene constantemente actualizado con los cambios en la normativa fiscal. Proporcionamos actualizaciones automáticas que incluyen los cambios más recientes en requisitos de facturación electrónica, catálogos del SAT y formatos de declaraciones. Nuestro equipo de expertos fiscales monitorea continuamente los cambios regulatorios para garantizar que su sistema siempre esté en cumplimiento.",
+      "NativoOne se mantiene constantemente actualizado con los cambios en la normativa fiscal colombiana. Proporcionamos actualizaciones automáticas que incluyen requisitos de facturación electrónica, catálogos y validaciones ante la DIAN cuando apliquen a su operación. Nuestro equipo monitorea los cambios regulatorios para ayudarle a mantener sus procesos alineados con el marco vigente.",
   },
   {
     question: "¿Puedo acceder a NativoOne desde dispositivos móviles?",
@@ -36,11 +36,11 @@ const faqs = [
 
 export function FAQ() {
   return (
-    <section className="w-full max-w-4xl mx-auto py-16 px-4">
+    <section id="faq" className="scroll-mt-28 w-full max-w-4xl mx-auto py-16 px-4">
       <div className="text-center mb-12">
         <h2 className="text-3xl font-bold tracking-tight mb-4">Preguntas frecuentes</h2>
-        <p className="text-muted-foreground">
-          Encuentre respuestas a las preguntas más comunes sobre nuestro sistema
+        <p className="text-muted-foreground max-w-xl mx-auto">
+          Respuestas sobre implementación, fiscalidad, movilidad y soporte.
         </p>
       </div>
       <Accordion type="single" collapsible className="w-full space-y-4">
@@ -50,7 +50,7 @@ export function FAQ() {
             key={index}
             value={`item-${index}`}
           >
-            <AccordionTrigger className="text-left text-gray-700 hover:no-underline hover:text">
+            <AccordionTrigger className="text-left text-gray-700 hover:no-underline hover:text-primary">
               {faq.question}
             </AccordionTrigger>
             <AccordionContent className="text-muted-foreground">{faq.answer}</AccordionContent>

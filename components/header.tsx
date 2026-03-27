@@ -7,23 +7,18 @@ import { Button } from "@/components/ui/button"
 import { Menu, X } from "lucide-react"
 import { MainNav } from "@/components/main-nav"
 import { MobileNav } from "@/components/mobile-nav"
-import { DropdownMenu } from "@/components/dropdown-menu"
+import { DropdownMenu, type DropdownVariant } from "@/components/dropdown-menu"
+import { trackCtaClick } from "@/lib/analytics"
 
 export function Header() {
-  const [activeDropdown, setActiveDropdown] = useState<string | null>(null)
+  const [activeDropdown, setActiveDropdown] = useState<DropdownVariant | null>(null)
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false)
-  const dropdownRef = useRef<HTMLDivElement>(null)
   const headerRef = useRef<HTMLDivElement>(null)
 
-  const toggleDropdown = (dropdown: string) => {
-    if (activeDropdown === dropdown) {
-      setActiveDropdown(null)
-    } else {
-      setActiveDropdown(dropdown)
-    }
+  const toggleDropdown = (dropdown: DropdownVariant) => {
+    setActiveDropdown((prev) => (prev === dropdown ? null : dropdown))
   }
 
-  // Prevent body scroll when dropdown is open
   useEffect(() => {
     if (activeDropdown || isMenuOpen) {
       document.body.style.overflow = "hidden"
@@ -44,7 +39,7 @@ export function Header() {
             <Link href="/" className="flex items-center space-x-2">
               <Image
                 src="/placeholder.svg?height=32&width=32"
-                alt="Logo"
+                alt="1NativoOne"
                 width={32}
                 height={32}
                 className="h-8 w-8"
@@ -53,45 +48,52 @@ export function Header() {
             </Link>
           </div>
 
-          {/* Desktop Navigation */}
           <MainNav
             className="hidden lg:flex justify-center items-center space-x-6"
             activeDropdown={activeDropdown}
             toggleDropdown={toggleDropdown}
           />
 
-          {/* CTA Button */}
           <div className="flex items-center space-x-3">
-            <Button className="hidden sm:flex" size="sm">
-              Get Started
+            <Button className="hidden sm:flex min-h-9" size="sm" asChild>
+              <Link
+                href="#contact"
+                onClick={() => trackCtaClick("header_primary", "Probar 14 días gratis")}
+              >
+                Probar 14 días gratis
+              </Link>
             </Button>
             <Button variant="ghost" size="sm" asChild className="hidden md:flex items-center gap-1">
-              <Link href="/login">Login</Link>
+              <Link href="/login">Iniciar sesión</Link>
             </Button>
             <Button
-              className="flex md:hidden"
+              className="flex md:hidden min-h-11 min-w-11"
               variant="ghost"
               size="icon"
+              type="button"
+              aria-expanded={isMenuOpen}
+              aria-controls="mobile-navigation"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
             >
               {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-              <span className="sr-only">Toggle menu</span>
+              <span className="sr-only">{isMenuOpen ? "Cerrar menú" : "Abrir menú"}</span>
             </Button>
           </div>
         </div>
 
-        {/* Stacked navigation for medium screens */}
         <div className="hidden md:block lg:hidden border-t">
           <div className="py-2">
             <MainNav
-              className="flex flex-wrap justify-center items-center space-x-6"
+              className="flex flex-wrap justify-center items-center gap-x-6 gap-y-2"
               activeDropdown={activeDropdown}
               toggleDropdown={toggleDropdown}
             />
           </div>
         </div>
       </header>
-      {activeDropdown && <DropdownMenu onClose={() => setActiveDropdown(null)} />}
+      {activeDropdown && (
+        <DropdownMenu variant={activeDropdown} onClose={() => setActiveDropdown(null)} />
+      )}
 
       <MobileNav isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} />
     </>

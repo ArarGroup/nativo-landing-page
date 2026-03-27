@@ -8,9 +8,9 @@ import { Footer } from "@/components/footer"
 const poppins = Poppins({ subsets: ["latin"], weight: ["400", "500", "600", "700"] })
 
 export const metadata: Metadata = {
-  title: "Solución ERP Integral para Empresas | 1NativoOne",
+  title: "ERP integral para empresas en Colombia | 1NativoOne",
   description:
-    "1NativoOne ofrece una solución ERP integral que automatiza sus procesos, simplifica la gestión fiscal y potencia el crecimiento de su empresa.",
+    "Unifique finanzas, inventario y facturación electrónica en un solo sistema. Prueba de 14 días. Pensado para equipos que operan con normativa colombiana y la DIAN.",
 }
 
 export default function RootLayout({

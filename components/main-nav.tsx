@@ -3,6 +3,7 @@
 import Link from "next/link"
 import { ChevronDown } from "lucide-react"
 import { cn } from "@/lib/utils"
+import type { DropdownVariant } from "@/components/dropdown-menu"
 
 interface NavItemProps {
   href: string
@@ -29,20 +30,22 @@ interface DropdownButtonProps {
 function DropdownButton({ label, isActive, onClick }: DropdownButtonProps) {
   return (
     <button
+      type="button"
       onClick={onClick}
-      className={`flex items-center gap-1 p-0 h-auto text-foreground/70 font-medium text-base hover:text-primary hover:no-underline ${
+      className={`flex items-center gap-1 p-0 h-auto text-foreground/70 font-medium text-base hover:text-primary hover:no-underline rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${
         isActive ? "text-primary" : ""
       }`}
+      aria-expanded={isActive}
     >
       {label}
-      <ChevronDown className="ml-1 h-4 w-4" />
+      <ChevronDown className="ml-1 h-4 w-4" aria-hidden />
     </button>
   )
 }
 
 interface MainNavProps {
-  activeDropdown: string | null
-  toggleDropdown: (dropdown: string) => void
+  activeDropdown: DropdownVariant | null
+  toggleDropdown: (dropdown: DropdownVariant) => void
   className?: string
 }
 

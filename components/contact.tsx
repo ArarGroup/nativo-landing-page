@@ -9,6 +9,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent } from "@/components/ui/card"
 import { Mail, Phone, CheckCircle } from "lucide-react"
+import { trackContactFormSubmit } from "@/lib/analytics"
 
 export function Contact() {
   const [formState, setFormState] = useState<"idle" | "submitting" | "success">("idle")
@@ -21,11 +22,14 @@ export function Contact() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     setFormState("submitting")
-    setTimeout(() => setFormState("success"), 1000)
+    setTimeout(() => {
+      setFormState("success")
+      trackContactFormSubmit()
+    }, 1000)
   }
 
   return (
-    <section id="contact" className="py-20 relative">
+    <section id="contact" className="scroll-mt-28 py-20 relative">
       {/* Background overlay that covers only half */}
       <div className="absolute inset-0 bg-slate-50 h-1/2" />
 
@@ -36,17 +40,30 @@ export function Contact() {
               Contáctenos
             </h2>
             <p className="text-muted-foreground mb-6">
-              ¿Listo para transformar las operaciones de su empresa? Contáctenos hoy.
+              Solicite la prueba de 14 días o una reunión con ventas. Responderemos por los canales
+              indicados abajo.
             </p>
 
             <div className="space-y-4">
               <div className="flex items-center space-x-3">
-                <Mail className="h-5 w-5 text-slate-700" />
-                <p className="text-muted-foreground">contacto@1nativoone.com</p>
+                <Mail className="h-5 w-5 text-slate-700 shrink-0" aria-hidden />
+                <p className="text-muted-foreground">
+                  <a href="mailto:contacto@1nativoone.com" className="underline-offset-4 hover:underline">
+                    contacto@1nativoone.com
+                  </a>
+                </p>
               </div>
               <div className="flex items-center space-x-3">
-                <Phone className="h-5 w-5 text-slate-700" />
-                <p className="text-muted-foreground">+57 (555) 123-4567</p>
+                <Phone className="h-5 w-5 text-slate-700 shrink-0" aria-hidden />
+                <p className="text-muted-foreground">
+                  Línea Colombia:{" "}
+                  <a href="tel:+576015551234" className="underline-offset-4 hover:underline">
+                    +57 601 555 1234
+                  </a>{" "}
+                  <span className="text-sm block sm:inline sm:ml-1 text-muted-foreground/80">
+                    (sustituye por tu número real)
+                  </span>
+                </p>
               </div>
             </div>
           </div>
@@ -87,13 +104,12 @@ export function Contact() {
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="message">Mensaje</Label>
+                    <Label htmlFor="message">Mensaje (opcional)</Label>
                     <Textarea
                       id="message"
                       name="message"
-                      placeholder="Cuéntenos sobre sus necesidades empresariales..."
+                      placeholder="Sector, tamaño de equipo o dudas sobre planes…"
                       rows={3}
-                      required
                       value={formData.message}
                       onChange={handleChange}
                     />

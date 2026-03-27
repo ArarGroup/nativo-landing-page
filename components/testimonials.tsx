@@ -19,7 +19,7 @@ const testimonials = [
   },
   {
     quote:
-      "Después de probar varios sistemas, NativoOne es el único que realmente entiende las necesidades fiscales de México. Las actualizaciones constantes nos mantienen siempre en cumplimiento.",
+      "Después de probar varios sistemas, NativoOne es el único que realmente entiende las necesidades fiscales de Colombia. Las actualizaciones constantes nos mantienen siempre en cumplimiento.",
     author: "Laura Sánchez",
     position: "Contadora General",
     company: "Distribuidora Nacional",

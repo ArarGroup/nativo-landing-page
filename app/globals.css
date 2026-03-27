@@ -61,4 +61,9 @@
   html {
     scroll-behavior: smooth;
   }
+
+  /* Offset in-page targets below sticky header + tabs */
+  section[id] {
+    scroll-margin-top: 6.5rem;
+  }
 }

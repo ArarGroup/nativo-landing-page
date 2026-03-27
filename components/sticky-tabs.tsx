@@ -9,18 +9,18 @@ interface TabItem {
   href: string
 }
 
+const STICKY_TABS: TabItem[] = [
+  { label: "Solución transversal", href: "#solution" },
+  { label: "Factura electrónica", href: "#invoice" },
+  { label: "Seguridad", href: "#security" },
+  { label: "Reportes e indicadores", href: "#reports" },
+  { label: "Soporte", href: "#support" },
+  { label: "FAQ", href: "#faq" },
+]
+
 export default function StickyTabs() {
   const [isSticky, setIsSticky] = useState(false)
   const [activeTab, setActiveTab] = useState("#solution")
-
-  const tabs: TabItem[] = [
-    { label: "Solución transversal", href: "#solution" },
-    { label: "Factura electrónica", href: "#invoice" },
-    { label: "Seguridad", href: "#security" },
-    { label: "Reportes e indicadores", href: "#reports" },
-    { label: "Soporte", href: "#support" },
-    { label: "FAQ", href: "#faq" },
-  ]
 
   useEffect(() => {
     const heroSection = document.getElementById("hero")
@@ -34,8 +34,7 @@ export default function StickyTabs() {
 
       setIsSticky(scrollPosition >= heroBottom)
 
-      // Update active tab based on scroll position
-      const sections = tabs.map((tab) => document.querySelector(tab.href))
+      const sections = STICKY_TABS.map((tab) => document.querySelector(tab.href))
 
       sections.forEach((section, index) => {
         if (!section) return
@@ -44,14 +43,15 @@ export default function StickyTabs() {
         const sectionBottom = section.getBoundingClientRect().bottom
 
         if (sectionTop <= 200 && sectionBottom >= 200) {
-          setActiveTab(tabs[index].href)
+          setActiveTab(STICKY_TABS[index].href)
         }
       })
     }
 
-    window.addEventListener("scroll", handleScroll)
+    window.addEventListener("scroll", handleScroll, { passive: true })
+    handleScroll()
     return () => window.removeEventListener("scroll", handleScroll)
-  }, [tabs])
+  }, [])
 
   return (
     <div
@@ -61,16 +61,22 @@ export default function StickyTabs() {
       )}
     >
       <div className="py-1">
-        <div className="flex justify-center overflow-x-auto py-2">
-          <div className="flex space-x-1 lg:space-x-4 p-1 lg:px-6 rounded-full bg-white shadow-sm border">
-            {tabs.map((tab) => (
+        <div className="flex justify-center overflow-x-auto py-2 px-2">
+          <div
+            className="flex space-x-1 lg:space-x-2 p-1 lg:px-4 rounded-full bg-white shadow-sm border max-w-full"
+            role="tablist"
+            aria-label="Secciones del producto"
+          >
+            {STICKY_TABS.map((tab) => (
               <Link
                 key={tab.href}
                 href={tab.href}
+                role="tab"
+                aria-selected={activeTab === tab.href}
                 className={cn(
-                  "px-4 py-2 text-sm font-medium rounded-full whitespace-nowrap transition-all",
+                  "px-3 lg:px-4 py-2 text-sm font-medium rounded-full whitespace-nowrap transition-all min-h-9 inline-flex items-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
                   activeTab === tab.href
-                    ? "bg-white text-primary"
+                    ? "bg-primary/10 text-primary"
                     : "text-gray-600 hover:text-gray-900"
                 )}
                 onClick={(e) => {
@@ -79,7 +85,7 @@ export default function StickyTabs() {
                   const element = document.querySelector(tab.href)
                   if (element) {
                     const headerHeight = document.querySelector("header")?.offsetHeight || 0
-                    const tabsHeight = 48 // Approximate height of tabs
+                    const tabsHeight = 52
                     const offset = headerHeight + tabsHeight
 
                     const elementPosition = element.getBoundingClientRect().top + window.scrollY
