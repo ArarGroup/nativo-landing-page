@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useRef, useEffect } from "react"
+import { useState, useRef, useEffect, useCallback } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
@@ -10,26 +10,63 @@ import { MobileNav } from "@/components/mobile-nav"
 import { DropdownMenu, type DropdownVariant } from "@/components/dropdown-menu"
 import { trackCtaClick } from "@/lib/analytics"
 
+const HOVER_CLOSE_DELAY_MS = 220
+
 export function Header() {
   const [activeDropdown, setActiveDropdown] = useState<DropdownVariant | null>(null)
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false)
   const headerRef = useRef<HTMLDivElement>(null)
+  const closeHoverTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  const cancelPendingClose = useCallback(() => {
+    if (closeHoverTimeoutRef.current) {
+      clearTimeout(closeHoverTimeoutRef.current)
+      closeHoverTimeoutRef.current = null
+    }
+  }, [])
+
+  const scheduleCloseDropdown = useCallback(() => {
+    cancelPendingClose()
+    closeHoverTimeoutRef.current = setTimeout(() => {
+      setActiveDropdown(null)
+      closeHoverTimeoutRef.current = null
+    }, HOVER_CLOSE_DELAY_MS)
+  }, [cancelPendingClose])
+
+  const openDropdownHover = useCallback(
+    (dropdown: DropdownVariant) => {
+      cancelPendingClose()
+      setActiveDropdown(dropdown)
+    },
+    [cancelPendingClose],
+  )
+
+  useEffect(() => {
+    return () => {
+      cancelPendingClose()
+    }
+  }, [cancelPendingClose])
 
   const toggleDropdown = (dropdown: DropdownVariant) => {
+    cancelPendingClose()
     setActiveDropdown((prev) => (prev === dropdown ? null : dropdown))
   }
 
+  /** Lock scroll only for the full-screen mobile drawer. Desktop mega menu does not lock body scroll (avoids scrollbar flicker / html vs body mismatch). When locking, set both html and body — the viewport often scrolls on <html>. */
   useEffect(() => {
-    if (activeDropdown || isMenuOpen) {
+    const root = document.documentElement
+    if (isMenuOpen) {
+      root.style.overflow = "hidden"
       document.body.style.overflow = "hidden"
     } else {
+      root.style.overflow = ""
       document.body.style.overflow = ""
     }
-
     return () => {
+      root.style.overflow = ""
       document.body.style.overflow = ""
     }
-  }, [activeDropdown, isMenuOpen])
+  }, [isMenuOpen])
 
   return (
     <>
@@ -52,6 +89,8 @@ export function Header() {
             className="hidden lg:flex justify-center items-center space-x-6"
             activeDropdown={activeDropdown}
             toggleDropdown={toggleDropdown}
+            onDropdownHoverOpen={openDropdownHover}
+            onDropdownHoverClose={scheduleCloseDropdown}
           />
 
           <div className="flex items-center space-x-3">
@@ -87,12 +126,22 @@ export function Header() {
               className="flex flex-wrap justify-center items-center gap-x-6 gap-y-2"
               activeDropdown={activeDropdown}
               toggleDropdown={toggleDropdown}
+              onDropdownHoverOpen={openDropdownHover}
+              onDropdownHoverClose={scheduleCloseDropdown}
             />
           </div>
         </div>
       </header>
       {activeDropdown && (
-        <DropdownMenu variant={activeDropdown} onClose={() => setActiveDropdown(null)} />
+        <DropdownMenu
+          variant={activeDropdown}
+          onClose={() => {
+            cancelPendingClose()
+            setActiveDropdown(null)
+          }}
+          onPanelMouseEnter={cancelPendingClose}
+          onPanelMouseLeave={scheduleCloseDropdown}
+        />
       )}
 
       <MobileNav isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} />

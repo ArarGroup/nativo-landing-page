@@ -1,7 +1,6 @@
 "use client"
 
 import Link from "next/link"
-import { useRef } from "react"
 import { Button } from "@/components/ui/button"
 
 interface MenuItem {
@@ -20,6 +19,8 @@ export type DropdownVariant = "products" | "solutions"
 interface DropdownMenuProps {
   variant: DropdownVariant
   onClose: () => void
+  onPanelMouseEnter?: () => void
+  onPanelMouseLeave?: () => void
 }
 
 const productSections: MenuSection[] = [
@@ -88,18 +89,18 @@ const solutionSections: MenuSection[] = [
   },
 ]
 
-export function DropdownMenu({ variant, onClose }: DropdownMenuProps) {
-  const dropdownRef = useRef<HTMLDivElement>(null)
+export function DropdownMenu({ variant, onClose, onPanelMouseEnter, onPanelMouseLeave }: DropdownMenuProps) {
   const menuSections = variant === "products" ? productSections : solutionSections
 
   return (
     <>
       <div className="fixed inset-0 z-30 bg-black/30" onClick={onClose} aria-hidden />
       <div
-        ref={dropdownRef}
         role="dialog"
         aria-label={variant === "products" ? "Menú productos" : "Menú soluciones"}
-        className="fixed top-24 lg:top-16 left-0 w-full bg-white border-t border-b shadow-md z-40 animate-fadeIn hidden md:block"
+        onMouseEnter={onPanelMouseEnter}
+        onMouseLeave={onPanelMouseLeave}
+        className="fixed top-24 lg:top-16 left-0 w-full bg-white border-t border-b shadow-md z-[60] animate-fadeIn hidden md:block"
       >
         <div className="container py-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">

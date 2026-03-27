@@ -25,13 +25,17 @@ interface DropdownButtonProps {
   label: string
   isActive: boolean
   onClick: () => void
+  onMouseEnter?: () => void
+  onMouseLeave?: () => void
 }
 
-function DropdownButton({ label, isActive, onClick }: DropdownButtonProps) {
+function DropdownButton({ label, isActive, onClick, onMouseEnter, onMouseLeave }: DropdownButtonProps) {
   return (
     <button
       type="button"
       onClick={onClick}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
       className={`flex items-center gap-1 p-0 h-auto text-foreground/70 font-medium text-base hover:text-primary hover:no-underline rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${
         isActive ? "text-primary" : ""
       }`}
@@ -46,22 +50,34 @@ function DropdownButton({ label, isActive, onClick }: DropdownButtonProps) {
 interface MainNavProps {
   activeDropdown: DropdownVariant | null
   toggleDropdown: (dropdown: DropdownVariant) => void
+  onDropdownHoverOpen?: (dropdown: DropdownVariant) => void
+  onDropdownHoverClose?: () => void
   className?: string
 }
 
-export function MainNav({ activeDropdown, toggleDropdown, className }: MainNavProps) {
+export function MainNav({
+  activeDropdown,
+  toggleDropdown,
+  onDropdownHoverOpen,
+  onDropdownHoverClose,
+  className,
+}: MainNavProps) {
   return (
     <nav className={cn(className)}>
       <DropdownButton
         label="Productos"
         isActive={activeDropdown === "products"}
         onClick={() => toggleDropdown("products")}
+        onMouseEnter={() => onDropdownHoverOpen?.("products")}
+        onMouseLeave={onDropdownHoverClose}
       />
 
       <DropdownButton
         label="Soluciones"
         isActive={activeDropdown === "solutions"}
         onClick={() => toggleDropdown("solutions")}
+        onMouseEnter={() => onDropdownHoverOpen?.("solutions")}
+        onMouseLeave={onDropdownHoverClose}
       />
 
       <NavItem href="#accountants">Contadores</NavItem>
