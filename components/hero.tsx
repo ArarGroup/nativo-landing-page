@@ -1,17 +1,11 @@
 import Image from "next/image"
-import { CanvasNetworkBackground } from "@/components/network-background"
+import { HeroP5Background } from "@/components/hero-p5-background"
 import { HeroActions } from "@/components/hero-actions"
 
 export function Hero() {
   return (
     <div className="relative overflow-hidden">
-      <CanvasNetworkBackground
-        color="#1F98EA"
-        secondaryColor="#0098EA"
-        particleCount={50}
-        flowDirection="diagonal-up"
-        transversalFactor={0.3}
-      />
+      <HeroP5Background color="#1F98EA" secondaryColor="#0098EA" />
 
       <div className="absolute inset-0 bg-gradient-to-bl from-background/10 via-background/40 to-background" />
 
