@@ -40,7 +40,7 @@ export default function StickyTabs() {
   }, [])
 
   useEffect(() => {
-    const heroSection = document.getElementById("hero")
+    const heroSection = document.getElementById("hero-chaos-clarity")
     const socialSection = document.getElementById("social-proof")
     const header = document.querySelector("header")
 
