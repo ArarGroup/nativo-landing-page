@@ -1,40 +1,72 @@
 "use client"
 
-import { useState, useRef, useEffect } from "react"
+import { useState, useRef, useEffect, useCallback } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Menu, X } from "lucide-react"
 import { MainNav } from "@/components/main-nav"
 import { MobileNav } from "@/components/mobile-nav"
-import { DropdownMenu } from "@/components/dropdown-menu"
+import { DropdownMenu, type DropdownVariant } from "@/components/dropdown-menu"
+import { trackCtaClick } from "@/lib/analytics"
+
+const HOVER_CLOSE_DELAY_MS = 220
 
 export function Header() {
-  const [activeDropdown, setActiveDropdown] = useState<string | null>(null)
+  const [activeDropdown, setActiveDropdown] = useState<DropdownVariant | null>(null)
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false)
-  const dropdownRef = useRef<HTMLDivElement>(null)
   const headerRef = useRef<HTMLDivElement>(null)
+  const closeHoverTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
-  const toggleDropdown = (dropdown: string) => {
-    if (activeDropdown === dropdown) {
-      setActiveDropdown(null)
-    } else {
-      setActiveDropdown(dropdown)
+  const cancelPendingClose = useCallback(() => {
+    if (closeHoverTimeoutRef.current) {
+      clearTimeout(closeHoverTimeoutRef.current)
+      closeHoverTimeoutRef.current = null
     }
+  }, [])
+
+  const scheduleCloseDropdown = useCallback(() => {
+    cancelPendingClose()
+    closeHoverTimeoutRef.current = setTimeout(() => {
+      setActiveDropdown(null)
+      closeHoverTimeoutRef.current = null
+    }, HOVER_CLOSE_DELAY_MS)
+  }, [cancelPendingClose])
+
+  const openDropdownHover = useCallback(
+    (dropdown: DropdownVariant) => {
+      cancelPendingClose()
+      setActiveDropdown(dropdown)
+    },
+    [cancelPendingClose],
+  )
+
+  useEffect(() => {
+    return () => {
+      cancelPendingClose()
+    }
+  }, [cancelPendingClose])
+
+  const toggleDropdown = (dropdown: DropdownVariant) => {
+    cancelPendingClose()
+    setActiveDropdown((prev) => (prev === dropdown ? null : dropdown))
   }
 
-  // Prevent body scroll when dropdown is open
+  /** Lock scroll only for the full-screen mobile drawer. Desktop mega menu does not lock body scroll (avoids scrollbar flicker / html vs body mismatch). When locking, set both html and body — the viewport often scrolls on <html>. */
   useEffect(() => {
-    if (activeDropdown || isMenuOpen) {
+    const root = document.documentElement
+    if (isMenuOpen) {
+      root.style.overflow = "hidden"
       document.body.style.overflow = "hidden"
     } else {
+      root.style.overflow = ""
       document.body.style.overflow = ""
     }
-
     return () => {
+      root.style.overflow = ""
       document.body.style.overflow = ""
     }
-  }, [activeDropdown, isMenuOpen])
+  }, [isMenuOpen])
 
   return (
     <>
@@ -44,7 +76,7 @@ export function Header() {
             <Link href="/" className="flex items-center space-x-2">
               <Image
                 src="/placeholder.svg?height=32&width=32"
-                alt="Logo"
+                alt="1NativoOne"
                 width={32}
                 height={32}
                 className="h-8 w-8"
@@ -53,45 +85,61 @@ export function Header() {
             </Link>
           </div>
 
-          {/* Desktop Navigation */}
           <MainNav
             className="hidden lg:flex justify-center items-center space-x-6"
             activeDropdown={activeDropdown}
             toggleDropdown={toggleDropdown}
+            onDropdownHoverOpen={openDropdownHover}
+            onDropdownHoverClose={scheduleCloseDropdown}
           />
 
-          {/* CTA Button */}
           <div className="flex items-center space-x-3">
-            <Button className="hidden sm:flex" size="sm">
-              Get Started
-            </Button>
-            <Button variant="ghost" size="sm" asChild className="hidden md:flex items-center gap-1">
-              <Link href="/login">Login</Link>
+            <Button className="hidden sm:flex min-h-9" size="sm" asChild>
+              <Link
+                href="#contact"
+                onClick={() => trackCtaClick("header_primary", "Contáctanos")}
+              >
+                Contáctanos
+              </Link>
             </Button>
             <Button
-              className="flex md:hidden"
+              className="flex md:hidden min-h-11 min-w-11"
               variant="ghost"
               size="icon"
+              type="button"
+              aria-expanded={isMenuOpen}
+              aria-controls="mobile-navigation"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
             >
               {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-              <span className="sr-only">Toggle menu</span>
+              <span className="sr-only">{isMenuOpen ? "Cerrar menú" : "Abrir menú"}</span>
             </Button>
           </div>
         </div>
 
-        {/* Stacked navigation for medium screens */}
         <div className="hidden md:block lg:hidden border-t">
           <div className="py-2">
             <MainNav
-              className="flex flex-wrap justify-center items-center space-x-6"
+              className="flex flex-wrap justify-center items-center gap-x-6 gap-y-2"
               activeDropdown={activeDropdown}
               toggleDropdown={toggleDropdown}
+              onDropdownHoverOpen={openDropdownHover}
+              onDropdownHoverClose={scheduleCloseDropdown}
             />
           </div>
         </div>
       </header>
-      {activeDropdown && <DropdownMenu onClose={() => setActiveDropdown(null)} />}
+      {activeDropdown && (
+        <DropdownMenu
+          variant={activeDropdown}
+          onClose={() => {
+            cancelPendingClose()
+            setActiveDropdown(null)
+          }}
+          onPanelMouseEnter={cancelPendingClose}
+          onPanelMouseLeave={scheduleCloseDropdown}
+        />
+      )}
 
       <MobileNav isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} />
     </>

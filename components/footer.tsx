@@ -1,22 +1,22 @@
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Facebook, Twitter, Instagram, Linkedin, Github } from "lucide-react"
+import { Facebook, Twitter, Instagram, Linkedin } from "lucide-react"
 
 export function Footer() {
   return (
     <footer className="bg-slate-50 border-t">
       <div className="container py-12 md:py-16">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          {/* Company Info */}
           <div className="md:col-span-1">
             <Link href="/" className="text-xl font-bold">
               1NativoOne
             </Link>
-            <p className="mt-3 text-muted-foreground">
-              Making the world a better place through innovative solutions.
+            <p className="mt-3 text-muted-foreground text-sm leading-relaxed">
+              ERP integral para PyMEs y equipos administrativos en Colombia. Operación, finanzas y
+              facturación en un solo sistema.
             </p>
-            <div className="mt-4 flex space-x-4">
+            <div className="mt-4 flex flex-wrap gap-4">
               <Link href="#" className="text-muted-foreground hover:text-primary">
                 <Facebook className="h-5 w-5" />
                 <span className="sr-only">Facebook</span>
@@ -33,104 +33,95 @@ export function Footer() {
                 <Linkedin className="h-5 w-5" />
                 <span className="sr-only">LinkedIn</span>
               </Link>
-              <Link href="#" className="text-muted-foreground hover:text-primary">
-                <Github className="h-5 w-5" />
-                <span className="sr-only">GitHub</span>
-              </Link>
             </div>
           </div>
 
-          {/* Quick Links */}
           <div>
-            <h3 className="text-sm font-semibold">Products</h3>
+            <h3 className="text-sm font-semibold">Producto</h3>
             <ul className="mt-4 space-y-2">
               <li>
-                <Link
-                  href="/products/software"
-                  className="text-muted-foreground hover:text-primary"
-                >
-                  Software Solutions
+                <Link href="#solution" className="text-muted-foreground hover:text-primary text-sm">
+                  Solución integral
                 </Link>
               </li>
               <li>
-                <Link
-                  href="/products/hardware"
-                  className="text-muted-foreground hover:text-primary"
-                >
-                  Hardware Products
+                <Link href="#invoice" className="text-muted-foreground hover:text-primary text-sm">
+                  Facturación
                 </Link>
               </li>
               <li>
-                <Link
-                  href="/products/enterprise"
-                  className="text-muted-foreground hover:text-primary"
-                >
-                  Enterprise Services
+                <Link href="#reports" className="text-muted-foreground hover:text-primary text-sm">
+                  Reportes
                 </Link>
               </li>
               <li>
-                <Link href="/products" className="text-muted-foreground hover:text-primary">
-                  All Products
+                <Link href="#pricing" className="text-muted-foreground hover:text-primary text-sm">
+                  Precios
                 </Link>
               </li>
             </ul>
           </div>
 
           <div>
-            <h3 className="text-sm font-semibold">Company</h3>
+            <h3 className="text-sm font-semibold">Empresa</h3>
             <ul className="mt-4 space-y-2">
               <li>
-                <Link href="/about" className="text-muted-foreground hover:text-primary">
-                  About Us
+                <Link href="#challenge" className="text-muted-foreground hover:text-primary text-sm">
+                  Enfoque
                 </Link>
               </li>
               <li>
-                <Link href="/careers" className="text-muted-foreground hover:text-primary">
-                  Careers
+                <Link
+                  href="#accountants"
+                  className="text-muted-foreground hover:text-primary text-sm"
+                >
+                  Contadores
                 </Link>
               </li>
               <li>
-                <Link href="/blog" className="text-muted-foreground hover:text-primary">
-                  Blog
+                <Link href="#faq" className="text-muted-foreground hover:text-primary text-sm">
+                  Preguntas frecuentes
                 </Link>
               </li>
               <li>
-                <Link href="/contact" className="text-muted-foreground hover:text-primary">
-                  Contact
+                <Link href="#contact" className="text-muted-foreground hover:text-primary text-sm">
+                  Contacto
                 </Link>
               </li>
             </ul>
           </div>
 
-          {/* Newsletter */}
           <div>
-            <h3 className="text-sm font-semibold">Stay Updated</h3>
+            <h3 className="text-sm font-semibold">Actualizaciones</h3>
             <p className="mt-4 text-sm text-muted-foreground">
-              Subscribe to our newsletter for the latest updates and offers.
+              Suscríbase para novedades de producto y normativa (sin spam).
             </p>
-            <form className="mt-4 flex flex-col sm:flex-row gap-2">
+            <form className="mt-4 flex flex-col sm:flex-row gap-2" action="#" method="post">
               <Input
                 type="email"
-                placeholder="Enter your email"
-                className="flex-1"
-                aria-label="Email for newsletter"
+                placeholder="Correo electrónico"
+                className="flex-1 min-h-11"
+                aria-label="Correo para boletín"
+                name="email"
               />
-              <Button type="submit">Subscribe</Button>
+              <Button type="submit" className="min-h-11">
+                Suscribirse
+              </Button>
             </form>
           </div>
         </div>
 
         <div className="mt-12 pt-8 border-t">
-          <div className="flex flex-col md:flex-row justify-between items-center">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-sm text-muted-foreground">
-              &copy; {new Date().getFullYear()} 1NativoOne. All rights reserved.
+              &copy; {new Date().getFullYear()} 1NativoOne. Todos los derechos reservados.
             </p>
-            <div className="mt-4 md:mt-0 flex space-x-6">
+            <div className="flex flex-wrap justify-center gap-6">
               <Link href="/terms" className="text-sm text-muted-foreground hover:text-primary">
-                Terms
+                Términos
               </Link>
               <Link href="/privacy" className="text-sm text-muted-foreground hover:text-primary">
-                Privacy
+                Privacidad
               </Link>
               <Link href="/cookies" className="text-sm text-muted-foreground hover:text-primary">
                 Cookies

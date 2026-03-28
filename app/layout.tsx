@@ -4,13 +4,14 @@ import { Poppins } from "next/font/google"
 import "./globals.css"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
+import { CustomCursor } from "@/components/custom-cursor"
 
 const poppins = Poppins({ subsets: ["latin"], weight: ["400", "500", "600", "700"] })
 
 export const metadata: Metadata = {
-  title: "Solución ERP Integral para Empresas | 1NativoOne",
+  title: "ERP integral para empresas en Colombia | 1NativoOne",
   description:
-    "1NativoOne ofrece una solución ERP integral que automatiza sus procesos, simplifica la gestión fiscal y potencia el crecimiento de su empresa.",
+    "Unifique finanzas, inventario y facturación electrónica en un solo sistema. Solicite una demo o una reunión con nuestro equipo. Pensado para equipos que operan con normativa colombiana y la DIAN.",
 }
 
 export default function RootLayout({
@@ -22,6 +23,7 @@ export default function RootLayout({
     <html lang="es" suppressHydrationWarning>
       <body className={poppins.className}>
         <div className="relative flex min-h-screen flex-col">
+          <CustomCursor />
           <Header />
           <main className="flex-1">{children}</main>
           <Footer />
