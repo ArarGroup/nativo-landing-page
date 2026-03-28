@@ -42,8 +42,8 @@ export function Contact() {
               Contáctenos
             </h2>
             <p className="text-muted-foreground mb-6">
-              Solicite la prueba de 14 días o una reunión con ventas. Responderemos por los canales
-              indicados abajo.
+              Solicite una demo o una reunión con ventas. Responderemos por los canales indicados
+              abajo.
             </p>
 
             <div className="space-y-4">

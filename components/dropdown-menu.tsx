@@ -123,7 +123,7 @@ export function DropdownMenu({ variant, onClose, onPanelMouseEnter, onPanelMouse
               <div>
                 <h3 className="text-lg font-medium">¿Listo para evaluar NativoOne?</h3>
                 <p className="mt-2 text-sm text-muted-foreground">
-                  Reserve una conversación o inicie la prueba de 14 días desde contacto.
+                  Reserve una conversación o solicite una demo desde contacto.
                 </p>
                 <Button className="mt-4" asChild>
                   <Link href="#contact" onClick={onClose}>

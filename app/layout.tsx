@@ -11,7 +11,7 @@ const poppins = Poppins({ subsets: ["latin"], weight: ["400", "500", "600", "700
 export const metadata: Metadata = {
   title: "ERP integral para empresas en Colombia | 1NativoOne",
   description:
-    "Unifique finanzas, inventario y facturación electrónica en un solo sistema. Prueba de 14 días. Pensado para equipos que operan con normativa colombiana y la DIAN.",
+    "Unifique finanzas, inventario y facturación electrónica en un solo sistema. Solicite una demo o una reunión con nuestro equipo. Pensado para equipos que operan con normativa colombiana y la DIAN.",
 }
 
 export default function RootLayout({

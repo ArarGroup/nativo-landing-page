@@ -97,13 +97,10 @@ export function Header() {
             <Button className="hidden sm:flex min-h-9" size="sm" asChild>
               <Link
                 href="#contact"
-                onClick={() => trackCtaClick("header_primary", "Probar 14 días gratis")}
+                onClick={() => trackCtaClick("header_primary", "Contáctanos")}
               >
-                Probar 14 días gratis
+                Contáctanos
               </Link>
-            </Button>
-            <Button variant="ghost" size="sm" asChild className="hidden md:flex items-center gap-1">
-              <Link href="/login">Iniciar sesión</Link>
             </Button>
             <Button
               className="flex md:hidden min-h-11 min-w-11"

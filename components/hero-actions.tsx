@@ -18,9 +18,9 @@ export function HeroActions() {
         >
           <Link
             href="#contact"
-            onClick={() => trackCtaClick("hero_primary", "Probar 14 días gratis")}
+            onClick={() => trackCtaClick("hero_primary", "Contáctanos")}
           >
-            Probar 14 días gratis
+            Contáctanos
             <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
           </Link>
         </Button>

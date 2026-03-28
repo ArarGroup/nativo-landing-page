@@ -59,7 +59,7 @@ export function Pricing() {
         "Informes estándar",
         "Soporte por correo electrónico",
       ],
-      cta: "Comenzar prueba gratuita",
+      cta: "Contáctanos",
       popular: false,
       href: "#contact" as const,
     },
@@ -77,7 +77,7 @@ export function Pricing() {
         "Acceso a API",
         "Automatización de flujos de trabajo",
       ],
-      cta: "Comenzar prueba gratuita",
+      cta: "Contáctanos",
       popular: true,
       href: "#contact" as const,
     },
@@ -110,8 +110,9 @@ export function Pricing() {
             Precios simples y transparentes
           </h2>
           <p className="text-slate-600 md:text-lg max-w-2xl mx-auto">
-            Elige el plan que mejor se adapte a tu negocio. Todos los planes incluyen{" "}
-            <strong>14 días de prueba</strong>. ¿Condiciones fiscales o volumen especial? Revisa las{" "}
+            Elige el plan que mejor se adapte a tu negocio. Coordinamos una{" "}
+            <strong>demo orientada a su operación</strong>. ¿Condiciones fiscales o volumen especial?
+            Revisa las{" "}
             <Link href="#faq" className="text-primary font-medium underline-offset-4 hover:underline">
               preguntas frecuentes
             </Link>{" "}

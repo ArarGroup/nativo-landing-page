@@ -42,7 +42,7 @@ export function SocialProofStrip() {
   const prefersReduced = useReducedMotion()
 
   return (
-    <section aria-label="Señales de confianza" className="border-y bg-slate-50/80">
+    <section id="social-proof" aria-label="Señales de confianza" className="border-y bg-slate-50/80">
       <div className="container px-4 md:px-6 py-10 md:py-12">
         <p className="text-center text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-8">
           Por qué equipos administrativos evalúan NativoOne

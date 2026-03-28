@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useLayoutEffect, useRef, useState } from "react"
 import { cn } from "@/lib/utils"
 import Link from "next/link"
 
@@ -18,21 +18,41 @@ const STICKY_TABS: TabItem[] = [
   { label: "FAQ", href: "#faq" },
 ]
 
+function elementDocumentBottomY(el: Element) {
+  const rect = el.getBoundingClientRect()
+  return rect.bottom + window.scrollY
+}
+
 export default function StickyTabs() {
   const [isSticky, setIsSticky] = useState(false)
   const [activeTab, setActiveTab] = useState("#solution")
+  const [barHeight, setBarHeight] = useState(0)
+  const barRef = useRef<HTMLDivElement>(null)
+
+  useLayoutEffect(() => {
+    const el = barRef.current
+    if (!el) return
+    const measure = () => setBarHeight(el.offsetHeight)
+    measure()
+    const ro = new ResizeObserver(measure)
+    ro.observe(el)
+    return () => ro.disconnect()
+  }, [])
 
   useEffect(() => {
     const heroSection = document.getElementById("hero")
+    const socialSection = document.getElementById("social-proof")
     const header = document.querySelector("header")
 
     if (!heroSection || !header) return
 
     const handleScroll = () => {
-      const heroBottom = heroSection.offsetTop + heroSection.offsetHeight
+      // Stick only after the last block above this bar (social proof, or hero if strip is absent)
+      const thresholdEl = socialSection ?? heroSection
+      const thresholdBottom = elementDocumentBottomY(thresholdEl)
       const scrollPosition = window.scrollY + header.offsetHeight
 
-      setIsSticky(scrollPosition >= heroBottom)
+      setIsSticky(scrollPosition >= thresholdBottom)
 
       const sections = STICKY_TABS.map((tab) => document.querySelector(tab.href))
 
@@ -54,12 +74,17 @@ export default function StickyTabs() {
   }, [])
 
   return (
-    <div
-      className={cn(
-        "hidden md:block w-full transition-all duration-300 z-20",
-        isSticky ? "fixed top-16 left-0" : "relative"
-      )}
-    >
+    <div className="hidden md:block w-full">
+      {isSticky && barHeight > 0 ? (
+        <div className="w-full" style={{ height: barHeight }} aria-hidden />
+      ) : null}
+      <div
+        ref={barRef}
+        className={cn(
+          "w-full transition-all duration-300 z-20",
+          isSticky ? "fixed top-16 left-0 right-0" : "relative"
+        )}
+      >
       <div className="py-1">
         <div className="flex justify-center overflow-x-auto py-2 px-2">
           <div
@@ -85,7 +110,7 @@ export default function StickyTabs() {
                   const element = document.querySelector(tab.href)
                   if (element) {
                     const headerHeight = document.querySelector("header")?.offsetHeight || 0
-                    const tabsHeight = 52
+                    const tabsHeight = (barRef.current?.offsetHeight ?? barHeight) || 52
                     const offset = headerHeight + tabsHeight
 
                     const elementPosition = element.getBoundingClientRect().top + window.scrollY
@@ -101,6 +126,7 @@ export default function StickyTabs() {
             ))}
           </div>
         </div>
+      </div>
       </div>
     </div>
   )

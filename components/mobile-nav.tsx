@@ -120,11 +120,11 @@ export function MobileNav({ isOpen, onClose }: MobileNavProps) {
             <Link
               href="#contact"
               onClick={() => {
-                trackCtaClick("mobile_nav", "Probar 14 días gratis")
+                trackCtaClick("mobile_nav", "Contáctanos")
                 onClose()
               }}
             >
-              Probar 14 días gratis
+              Contáctanos
             </Link>
           </Button>
         </div>

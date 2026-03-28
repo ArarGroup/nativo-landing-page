@@ -72,7 +72,7 @@ export const features: Feature[] = [
       "Conciliación más simple entre ingresos y estados de cuenta",
       "Preparado para evolucionar con catálogos y reglas fiscales vigentes",
     ],
-    buttonText: "Ver planes e iniciar prueba",
+    buttonText: "Ver planes y contactar",
     mainImage: {
       src: "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&q=80&w=2426",
       alt: "Proceso de facturación electrónica",
