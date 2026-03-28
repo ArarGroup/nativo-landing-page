@@ -3,6 +3,7 @@
 import type React from "react"
 
 import { useState } from "react"
+import { motion, AnimatePresence } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
@@ -10,6 +11,7 @@ import { Label } from "@/components/ui/label"
 import { Card, CardContent } from "@/components/ui/card"
 import { Mail, Phone, CheckCircle } from "lucide-react"
 import { trackContactFormSubmit } from "@/lib/analytics"
+import { MotionSection } from "@/components/motion-section"
 
 export function Contact() {
   const [formState, setFormState] = useState<"idle" | "submitting" | "success">("idle")
@@ -35,7 +37,7 @@ export function Contact() {
 
       <div className="container px-4 mx-auto max-w-4xl relative">
         <div className="grid md:grid-cols-2 gap-8 items-center">
-          <div>
+          <MotionSection>
             <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl mb-4">
               Contáctenos
             </h2>
@@ -66,60 +68,71 @@ export function Contact() {
                 </p>
               </div>
             </div>
-          </div>
+          </MotionSection>
 
           <Card className="border-slate-200 shadow-sm">
             <CardContent className="p-6">
+              <AnimatePresence mode="wait">
               {formState === "success" ? (
-                <div className="text-center py-6">
+                <motion.div
+                  key="success"
+                  className="text-center py-6"
+                  initial={{ opacity: 0, scale: 0.85 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.85 }}
+                  transition={{ type: "spring", stiffness: 260, damping: 20 }}
+                >
                   <CheckCircle className="h-12 w-12 text-green-500 mx-auto mb-4" />
                   <h3 className="text-lg font-medium mb-2">¡Mensaje enviado!</h3>
                   <p className="text-slate-500">Nos pondremos en contacto pronto.</p>
-                </div>
+                </motion.div>
               ) : (
-                <form onSubmit={handleSubmit} className="space-y-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="name">Nombre</Label>
-                    <Input
-                      id="name"
-                      name="name"
-                      placeholder="Su nombre"
-                      required
-                      value={formData.name}
-                      onChange={handleChange}
-                    />
-                  </div>
+                <motion.div key="form" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.2 }}>
+                  <form onSubmit={handleSubmit} className="space-y-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="name">Nombre</Label>
+                      <Input
+                        id="name"
+                        name="name"
+                        placeholder="Su nombre"
+                        required
+                        value={formData.name}
+                        onChange={handleChange}
+                      />
+                    </div>
 
-                  <div className="space-y-2">
-                    <Label htmlFor="email">Correo electrónico</Label>
-                    <Input
-                      id="email"
-                      name="email"
-                      type="email"
-                      placeholder="su@correo.com"
-                      required
-                      value={formData.email}
-                      onChange={handleChange}
-                    />
-                  </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="email">Correo electrónico</Label>
+                      <Input
+                        id="email"
+                        name="email"
+                        type="email"
+                        placeholder="su@correo.com"
+                        required
+                        value={formData.email}
+                        onChange={handleChange}
+                      />
+                    </div>
 
-                  <div className="space-y-2">
-                    <Label htmlFor="message">Mensaje (opcional)</Label>
-                    <Textarea
-                      id="message"
-                      name="message"
-                      placeholder="Sector, tamaño de equipo o dudas sobre planes…"
-                      rows={3}
-                      value={formData.message}
-                      onChange={handleChange}
-                    />
-                  </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="message">Mensaje (opcional)</Label>
+                      <Textarea
+                        id="message"
+                        name="message"
+                        placeholder="Sector, tamaño de equipo o dudas sobre planes…"
+                        rows={3}
+                        value={formData.message}
+                        onChange={handleChange}
+                      />
+                    </div>
 
-                  <Button type="submit" className="w-full" disabled={formState === "submitting"}>
-                    {formState === "submitting" ? "Enviando..." : "Enviar mensaje"}
-                  </Button>
-                </form>
+                    <Button type="submit" className="w-full" disabled={formState === "submitting"}>
+                      {formState === "submitting" ? "Enviando..." : "Enviar mensaje"}
+                    </Button>
+                  </form>
+                </motion.div>
               )}
+              </AnimatePresence>
             </CardContent>
           </Card>
         </div>

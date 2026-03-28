@@ -1,8 +1,15 @@
+"use client"
+
+import { motion } from "framer-motion"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Calculator, BookOpen } from "lucide-react"
+import { MotionSection } from "@/components/motion-section"
+import { useReducedMotion } from "@/hooks/use-reduced-motion"
 
 export function AudienceSections() {
+  const prefersReduced = useReducedMotion()
+
   return (
     <>
       <section
@@ -10,10 +17,14 @@ export function AudienceSections() {
         className="scroll-mt-28 py-16 md:py-20 bg-slate-50 border-y border-slate-100"
       >
         <div className="container px-4 md:px-6 max-w-5xl mx-auto">
-          <div className="flex flex-col md:flex-row md:items-start gap-8">
-            <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
+          <MotionSection className="flex flex-col md:flex-row md:items-start gap-8">
+            <motion.div
+              className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary"
+              whileHover={prefersReduced ? undefined : { scale: 1.08, rotate: -3 }}
+              transition={{ duration: 0.25 }}
+            >
               <Calculator className="h-7 w-7" aria-hidden />
-            </div>
+            </motion.div>
             <div className="flex-1">
               <h2 className="text-2xl md:text-3xl font-bold tracking-tight mb-4">
                 Para contadores y firmas que centralizan a sus clientes
@@ -28,16 +39,20 @@ export function AudienceSections() {
                 <Link href="#contact">Solicitar enfoque para despachos</Link>
               </Button>
             </div>
-          </div>
+          </MotionSection>
         </div>
       </section>
 
       <section id="resources" className="scroll-mt-28 py-16 md:py-20 bg-white">
         <div className="container px-4 md:px-6 max-w-5xl mx-auto">
-          <div className="flex flex-col md:flex-row md:items-start gap-8">
-            <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
+          <MotionSection className="flex flex-col md:flex-row md:items-start gap-8">
+            <motion.div
+              className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary"
+              whileHover={prefersReduced ? undefined : { scale: 1.08, rotate: -3 }}
+              transition={{ duration: 0.25 }}
+            >
               <BookOpen className="h-7 w-7" aria-hidden />
-            </div>
+            </motion.div>
             <div className="flex-1">
               <h2 className="text-2xl md:text-3xl font-bold tracking-tight mb-4">
                 Recursos y siguiente paso
@@ -58,7 +73,7 @@ export function AudienceSections() {
                 </Button>
               </div>
             </div>
-          </div>
+          </MotionSection>
         </div>
       </section>
     </>

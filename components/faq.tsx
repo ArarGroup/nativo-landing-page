@@ -1,10 +1,15 @@
-import { Badge } from "@/components/ui/badge"
+"use client"
+
+import { useRef } from "react"
+import { motion, useInView } from "framer-motion"
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion"
+import { MotionSection } from "@/components/motion-section"
+import { useReducedMotion } from "@/hooks/use-reduced-motion"
 
 const faqs = [
   {
@@ -34,29 +39,55 @@ const faqs = [
   },
 ]
 
+const containerVariants = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.08 } },
+}
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 16 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.4, ease: [0.25, 0.1, 0.25, 1.0] } },
+}
+
 export function FAQ() {
+  const ref = useRef(null)
+  const isInView = useInView(ref, { once: true, margin: "-80px" })
+  const prefersReduced = useReducedMotion()
+
   return (
     <section id="faq" className="scroll-mt-28 w-full max-w-4xl mx-auto py-16 px-4">
-      <div className="text-center mb-12">
+      <MotionSection className="text-center mb-12">
         <h2 className="text-3xl font-bold tracking-tight mb-4">Preguntas frecuentes</h2>
         <p className="text-muted-foreground max-w-xl mx-auto">
           Respuestas sobre implementación, fiscalidad, movilidad y soporte.
         </p>
-      </div>
-      <Accordion type="single" collapsible className="w-full space-y-4">
-        {faqs.map((faq, index) => (
-          <AccordionItem
-            className="border rounded-lg px-6 py-2"
-            key={index}
-            value={`item-${index}`}
-          >
-            <AccordionTrigger className="text-left text-gray-700 hover:no-underline hover:text-primary">
-              {faq.question}
-            </AccordionTrigger>
-            <AccordionContent className="text-muted-foreground">{faq.answer}</AccordionContent>
-          </AccordionItem>
-        ))}
-      </Accordion>
+      </MotionSection>
+
+      <motion.div
+        ref={ref}
+        variants={prefersReduced ? undefined : containerVariants}
+        initial={prefersReduced ? undefined : "hidden"}
+        animate={prefersReduced ? undefined : isInView ? "show" : "hidden"}
+      >
+        <Accordion type="single" collapsible className="w-full space-y-4">
+          {faqs.map((faq, index) => (
+            <motion.div
+              key={index}
+              variants={prefersReduced ? undefined : itemVariants}
+            >
+              <AccordionItem
+                className="border rounded-lg px-6 py-2"
+                value={`item-${index}`}
+              >
+                <AccordionTrigger className="text-left text-gray-700 hover:no-underline hover:text-primary">
+                  {faq.question}
+                </AccordionTrigger>
+                <AccordionContent className="text-muted-foreground">{faq.answer}</AccordionContent>
+              </AccordionItem>
+            </motion.div>
+          ))}
+        </Accordion>
+      </motion.div>
     </section>
   )
 }

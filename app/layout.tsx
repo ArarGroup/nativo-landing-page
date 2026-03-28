@@ -4,6 +4,7 @@ import { Poppins } from "next/font/google"
 import "./globals.css"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
+import { CustomCursor } from "@/components/custom-cursor"
 
 const poppins = Poppins({ subsets: ["latin"], weight: ["400", "500", "600", "700"] })
 
@@ -22,6 +23,7 @@ export default function RootLayout({
     <html lang="es" suppressHydrationWarning>
       <body className={poppins.className}>
         <div className="relative flex min-h-screen flex-col">
+          <CustomCursor />
           <Header />
           <main className="flex-1">{children}</main>
           <Footer />

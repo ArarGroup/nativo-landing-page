@@ -67,3 +67,33 @@
     scroll-margin-top: 6.5rem;
   }
 }
+
+/* Hide native cursor on pointer devices — replaced by CustomCursor component */
+@media (pointer: fine) {
+  html,
+  body {
+    cursor: none;
+  }
+  a,
+  button,
+  [role="tab"],
+  [role="button"],
+  label[for],
+  input[type="checkbox"],
+  input[type="radio"],
+  select {
+    cursor: none;
+  }
+}
+
+/* Reduced-motion: disable all transitions/animations as a fallback */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

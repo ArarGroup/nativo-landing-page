@@ -1,7 +1,9 @@
 "use client"
 
+import { useRef } from "react"
 import Link from "next/link"
 import ReactMarkdown from "react-markdown"
+import { motion, useInView } from "framer-motion"
 import {
   ArrowRight,
   DivideIcon as LucideIcon,
@@ -13,6 +15,7 @@ import {
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { trackCtaClick } from "@/lib/analytics"
+import { useReducedMotion } from "@/hooks/use-reduced-motion"
 
 export interface Feature {
   sectionId: string
@@ -156,101 +159,142 @@ export const features: Feature[] = [
   },
 ]
 
+const bulletVariants = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.08 } },
+}
+
+const bulletItemVariants = {
+  hidden: { opacity: 0, y: 12 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.35, ease: [0.25, 0.1, 0.25, 1.0] } },
+}
+
+function FeatureSection({ feature }: { feature: Feature }) {
+  const ref = useRef(null)
+  const isInView = useInView(ref, { once: true, margin: "-120px" })
+  const prefersReduced = useReducedMotion()
+
+  const textAnim = prefersReduced
+    ? {}
+    : {
+        initial: { opacity: 0, x: feature.imageOnLeft ? 40 : -40 },
+        animate: isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: feature.imageOnLeft ? 40 : -40 },
+        transition: { duration: 0.6, ease: [0.25, 0.1, 0.25, 1.0] },
+      }
+
+  const imageAnim = prefersReduced
+    ? {}
+    : {
+        initial: { opacity: 0, x: feature.imageOnLeft ? -40 : 40 },
+        animate: isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: feature.imageOnLeft ? -40 : 40 },
+        transition: { duration: 0.6, ease: [0.25, 0.1, 0.25, 1.0], delay: 0.1 },
+      }
+
+  const floatingImagePos = {
+    "top-right": "-top-8 -right-8",
+    "top-left": "-top-8 -left-8",
+    "bottom-right": "-bottom-8 -right-8",
+    "bottom-left": "-bottom-8 -left-8",
+  }[feature.floatingImage.position]
+
+  return (
+    <section
+      ref={ref}
+      key={feature.sectionId}
+      id={feature.sectionId}
+      className={`scroll-mt-28 rounded-lg min-h-[85vh] md:min-h-screen flex items-center mx-4 sm:mx-6 lg:mx-8 lg:px-16 py-16 md:py-24 ${
+        feature.bgColor === "white" ? "bg-white" : "bg-gray-50"
+      }`}
+    >
+      <div className="container max-w-6xl mx-auto px-4 sm:px-6">
+        <div
+          className={`grid lg:grid-cols-2 gap-12 lg:gap-20 items-center ${
+            feature.imageOnLeft ? "lg:grid-flow-col" : ""
+          }`}
+        >
+          {feature.imageOnLeft && (
+            <motion.div className="relative order-2 lg:order-none" {...imageAnim}>
+              <motion.img
+                src={feature.mainImage.src}
+                alt={feature.mainImage.alt}
+                className="rounded-lg shadow-2xl w-full"
+                whileHover={prefersReduced ? undefined : { scale: 1.02 }}
+                transition={{ duration: 0.3 }}
+              />
+              <img
+                src={feature.floatingImage.src}
+                alt={feature.floatingImage.alt}
+                className={`absolute w-40 sm:w-48 rounded-lg shadow-xl border-4 border-white ${floatingImagePos}`}
+              />
+            </motion.div>
+          )}
+
+          <motion.div className="order-1" {...textAnim}>
+            <div className="mb-6">
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6 text-balance">
+                {feature.title}
+              </h2>
+              <div className="text-gray-600 mb-6 leading-relaxed [&_strong]:font-semibold [&_strong]:text-foreground">
+                <ReactMarkdown>{feature.description}</ReactMarkdown>
+              </div>
+              <motion.ul
+                className="space-y-2 mb-8 text-muted-foreground text-sm sm:text-base"
+                variants={prefersReduced ? undefined : bulletVariants}
+                initial={prefersReduced ? undefined : "hidden"}
+                animate={prefersReduced ? undefined : isInView ? "show" : "hidden"}
+              >
+                {feature.bulletPoints.map((point) => (
+                  <motion.li
+                    key={point}
+                    className="flex gap-2"
+                    variants={prefersReduced ? undefined : bulletItemVariants}
+                  >
+                    <span className="text-primary mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
+                    <span>{point}</span>
+                  </motion.li>
+                ))}
+              </motion.ul>
+              <Button className="group" asChild>
+                <Link
+                  href="#contact"
+                  onClick={() =>
+                    trackCtaClick("feature_section", `${feature.sectionId}: ${feature.buttonText}`)
+                  }
+                >
+                  {feature.buttonText}
+                  <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                </Link>
+              </Button>
+            </div>
+          </motion.div>
+
+          {!feature.imageOnLeft && (
+            <motion.div className="relative order-2" {...imageAnim}>
+              <motion.img
+                src={feature.mainImage.src}
+                alt={feature.mainImage.alt}
+                className="rounded-lg shadow-2xl w-full"
+                whileHover={prefersReduced ? undefined : { scale: 1.02 }}
+                transition={{ duration: 0.3 }}
+              />
+              <img
+                src={feature.floatingImage.src}
+                alt={feature.floatingImage.alt}
+                className={`absolute w-40 sm:w-48 rounded-lg shadow-xl border-4 border-white ${floatingImagePos}`}
+              />
+            </motion.div>
+          )}
+        </div>
+      </div>
+    </section>
+  )
+}
+
 export function Features() {
   return (
     <div>
       {features.map((feature) => (
-        <section
-          key={feature.sectionId}
-          id={feature.sectionId}
-          className={`scroll-mt-28 rounded-lg min-h-[85vh] md:min-h-screen flex items-center mx-4 sm:mx-6 lg:mx-8 lg:px-16 py-16 md:py-24 ${
-            feature.bgColor === "white" ? "bg-white" : "bg-gray-50"
-          }`}
-        >
-          <div className="container max-w-6xl mx-auto px-4 sm:px-6">
-            <div
-              className={`grid lg:grid-cols-2 gap-12 lg:gap-20 items-center ${
-                feature.imageOnLeft ? "lg:grid-flow-col" : ""
-              }`}
-            >
-              {feature.imageOnLeft && (
-                <div className="relative order-2 lg:order-none">
-                  <img
-                    src={feature.mainImage.src}
-                    alt={feature.mainImage.alt}
-                    className="rounded-lg shadow-2xl w-full"
-                  />
-                  <img
-                    src={feature.floatingImage.src}
-                    alt={feature.floatingImage.alt}
-                    className={`absolute w-40 sm:w-48 rounded-lg shadow-xl border-4 border-white ${
-                      feature.floatingImage.position === "top-right"
-                        ? "-top-8 -right-8"
-                        : feature.floatingImage.position === "top-left"
-                          ? "-top-8 -left-8"
-                          : feature.floatingImage.position === "bottom-right"
-                            ? "-bottom-8 -right-8"
-                            : "-bottom-8 -left-8"
-                    }`}
-                  />
-                </div>
-              )}
-
-              <div className="order-1">
-                <div className="mb-6">
-                  <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6 text-balance">
-                    {feature.title}
-                  </h2>
-                  <div className="text-gray-600 mb-6 leading-relaxed [&_strong]:font-semibold [&_strong]:text-foreground">
-                    <ReactMarkdown>{feature.description}</ReactMarkdown>
-                  </div>
-                  <ul className="space-y-2 mb-8 text-muted-foreground text-sm sm:text-base">
-                    {feature.bulletPoints.map((point) => (
-                      <li key={point} className="flex gap-2">
-                        <span className="text-primary mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
-                        <span>{point}</span>
-                      </li>
-                    ))}
-                  </ul>
-                  <Button className="group" asChild>
-                    <Link
-                      href="#contact"
-                      onClick={() =>
-                        trackCtaClick("feature_section", `${feature.sectionId}: ${feature.buttonText}`)
-                      }
-                    >
-                      {feature.buttonText}
-                      <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-                    </Link>
-                  </Button>
-                </div>
-              </div>
-
-              {!feature.imageOnLeft && (
-                <div className="relative order-2">
-                  <img
-                    src={feature.mainImage.src}
-                    alt={feature.mainImage.alt}
-                    className="rounded-lg shadow-2xl w-full"
-                  />
-                  <img
-                    src={feature.floatingImage.src}
-                    alt={feature.floatingImage.alt}
-                    className={`absolute w-40 sm:w-48 rounded-lg shadow-xl border-4 border-white ${
-                      feature.floatingImage.position === "top-right"
-                        ? "-top-8 -right-8"
-                        : feature.floatingImage.position === "top-left"
-                          ? "-top-8 -left-8"
-                          : feature.floatingImage.position === "bottom-right"
-                            ? "-bottom-8 -right-8"
-                            : "-bottom-8 -left-8"
-                    }`}
-                  />
-                </div>
-              )}
-            </div>
-          </div>
-        </section>
+        <FeatureSection key={feature.sectionId} feature={feature} />
       ))}
     </div>
   )
