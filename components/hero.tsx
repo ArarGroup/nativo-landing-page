@@ -458,9 +458,9 @@ export function Hero() {
                         {/* Left module lines → hub */}
                         {([15, 50, 85] as const).map((yPct, i) => (
                           <g key={`ll-${i}`}>
-                            <line x1="39%" y1={`${yPct}%`} x2="50%" y2="50%" stroke="#e2e8f0" strokeWidth="1.5" />
+                            <line x1="38%" y1={`${yPct}%`} x2="50%" y2="50%" stroke="#e2e8f0" strokeWidth="1.5" />
                             <motion.line
-                              x1="39%" y1={`${yPct}%`} x2="50%" y2="50%"
+                              x1="38%" y1={`${yPct}%`} x2="50%" y2="50%"
                               stroke="#0ea5e9" strokeWidth="2" strokeLinecap="round"
                               strokeDasharray="18 200"
                               animate={{ strokeDashoffset: [218, 0] }}
@@ -472,9 +472,9 @@ export function Hero() {
                         {/* Right module lines → hub */}
                         {([15, 50, 85] as const).map((yPct, i) => (
                           <g key={`rl-${i}`}>
-                            <line x1="61%" y1={`${yPct}%`} x2="50%" y2="50%" stroke="#e2e8f0" strokeWidth="1.5" />
+                            <line x1="62%" y1={`${yPct}%`} x2="50%" y2="50%" stroke="#e2e8f0" strokeWidth="1.5" />
                             <motion.line
-                              x1="61%" y1={`${yPct}%`} x2="50%" y2="50%"
+                              x1="62%" y1={`${yPct}%`} x2="50%" y2="50%"
                               stroke="#0ea5e9" strokeWidth="2" strokeLinecap="round"
                               strokeDasharray="18 200"
                               animate={{ strokeDashoffset: [218, 0] }}
@@ -482,6 +482,58 @@ export function Hero() {
                             />
                           </g>
                         ))}
+
+                        {/* Left column vertical connections */}
+                        {([[15, 50], [50, 85]] as const).map(([y1, y2], i) => (
+                          <g key={`lv-${i}`}>
+                            <line x1="20%" y1={`${y1}%`} x2="20%" y2={`${y2}%`} stroke="#e2e8f0" strokeWidth="1.5" />
+                            <motion.line
+                              x1="20%" y1={`${y1}%`} x2="20%" y2={`${y2}%`}
+                              stroke="#0ea5e9" strokeWidth="2" strokeLinecap="round"
+                              strokeDasharray="14 200"
+                              animate={{ strokeDashoffset: [214, 0] }}
+                              transition={{ duration: 2.2, repeat: Infinity, ease: "linear", delay: 0.6 + i * 0.4 }}
+                            />
+                          </g>
+                        ))}
+
+                        {/* Right column vertical connections */}
+                        {([[15, 50], [50, 85]] as const).map(([y1, y2], i) => (
+                          <g key={`rv-${i}`}>
+                            <line x1="80%" y1={`${y1}%`} x2="80%" y2={`${y2}%`} stroke="#e2e8f0" strokeWidth="1.5" />
+                            <motion.line
+                              x1="80%" y1={`${y1}%`} x2="80%" y2={`${y2}%`}
+                              stroke="#0ea5e9" strokeWidth="2" strokeLinecap="round"
+                              strokeDasharray="14 200"
+                              animate={{ strokeDashoffset: [214, 0] }}
+                              transition={{ duration: 2.2, repeat: Infinity, ease: "linear", delay: 1.0 + i * 0.4 }}
+                            />
+                          </g>
+                        ))}
+
+                        {/* Top horizontal: left-top ↔ right-top */}
+                        <g>
+                          <line x1="38%" y1="15%" x2="62%" y2="15%" stroke="#e2e8f0" strokeWidth="1.5" />
+                          <motion.line
+                            x1="38%" y1="15%" x2="62%" y2="15%"
+                            stroke="#0ea5e9" strokeWidth="2" strokeLinecap="round"
+                            strokeDasharray="14 200"
+                            animate={{ strokeDashoffset: [214, 0] }}
+                            transition={{ duration: 2.2, repeat: Infinity, ease: "linear", delay: 1.4 }}
+                          />
+                        </g>
+
+                        {/* Bottom horizontal: left-bottom ↔ right-bottom */}
+                        <g>
+                          <line x1="38%" y1="85%" x2="62%" y2="85%" stroke="#e2e8f0" strokeWidth="1.5" />
+                          <motion.line
+                            x1="38%" y1="85%" x2="62%" y2="85%"
+                            stroke="#0ea5e9" strokeWidth="2" strokeLinecap="round"
+                            strokeDasharray="14 200"
+                            animate={{ strokeDashoffset: [214, 0] }}
+                            transition={{ duration: 2.2, repeat: Infinity, ease: "linear", delay: 1.8 }}
+                          />
+                        </g>
                       </svg>
 
                       {/* Central hub */}
@@ -503,9 +555,9 @@ export function Hero() {
                         <motion.div
                           key={node.id}
                           className="absolute left-[2%] z-10 flex items-center gap-2 bg-white rounded-xl border border-slate-100 px-2.5 py-2 shadow-sm"
-                          style={{ top: `${[15, 50, 85][i]}%`, transform: "translateY(-50%)", width: "36%" }}
-                          initial={{ opacity: 0, x: -8 }}
-                          animate={{ opacity: 1, x: 0 }}
+                          style={{ top: `${[15, 50, 85][i]}%`, width: "36%" }}
+                          initial={{ opacity: 0, x: -8, y: "-50%" }}
+                          animate={{ opacity: 1, x: 0, y: "-50%" }}
                           transition={{ duration: 0.3, delay: i * 0.08, ease }}
                         >
                           <div className="w-6 h-6 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
@@ -523,9 +575,9 @@ export function Hero() {
                         <motion.div
                           key={node.id}
                           className="absolute right-[2%] z-10 flex items-center gap-2 bg-white rounded-xl border border-slate-100 px-2.5 py-2 shadow-sm"
-                          style={{ top: `${[15, 50, 85][i]}%`, transform: "translateY(-50%)", width: "36%" }}
-                          initial={{ opacity: 0, x: 8 }}
-                          animate={{ opacity: 1, x: 0 }}
+                          style={{ top: `${[15, 50, 85][i]}%`, width: "36%" }}
+                          initial={{ opacity: 0, x: 8, y: "-50%" }}
+                          animate={{ opacity: 1, x: 0, y: "-50%" }}
                           transition={{ duration: 0.3, delay: (i + 3) * 0.08, ease }}
                         >
                           <div className="w-6 h-6 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
@@ -541,7 +593,7 @@ export function Hero() {
 
                     {/* Footer */}
                     <div className="shrink-0 px-4 py-2 border-t border-slate-100 bg-slate-50/60 flex items-center justify-between">
-                      <span className="text-[10px] text-slate-400">6 módulos activos</span>
+                      <span className="text-[10px] text-slate-400">Transacciones transversales</span>
                       <div className="flex gap-1">
                         {[...Array(6)].map((_, i) => (
                           <motion.div
