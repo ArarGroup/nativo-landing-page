@@ -2,6 +2,7 @@
 
 import Link from "next/link"
 import { ChevronDown } from "lucide-react"
+import { motion } from "framer-motion"
 import { cn } from "@/lib/utils"
 import type { DropdownVariant } from "@/components/dropdown-menu"
 
@@ -36,13 +37,19 @@ function DropdownButton({ label, isActive, onClick, onMouseEnter, onMouseLeave }
       onClick={onClick}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
-      className={`flex items-center gap-1 p-0 h-auto text-foreground/70 font-medium text-base hover:text-primary hover:no-underline rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${
+      className={`flex items-center gap-1 p-0 h-auto text-foreground/70 font-medium text-base hover:text-primary hover:no-underline rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring transition-colors ${
         isActive ? "text-primary" : ""
       }`}
       aria-expanded={isActive}
     >
       {label}
-      <ChevronDown className="ml-1 h-4 w-4" aria-hidden />
+      <motion.span
+        animate={{ rotate: isActive ? 180 : 0 }}
+        transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
+        className="ml-1 inline-flex"
+      >
+        <ChevronDown className="h-4 w-4" aria-hidden />
+      </motion.span>
     </button>
   )
 }
