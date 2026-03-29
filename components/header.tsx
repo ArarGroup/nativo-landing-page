@@ -1,8 +1,8 @@
 "use client"
 
 import { useState, useRef, useEffect, useCallback } from "react"
+import { AnimatePresence } from "framer-motion"
 import Link from "next/link"
-import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Menu, X } from "lucide-react"
 import { MainNav } from "@/components/main-nav"
@@ -74,13 +74,9 @@ export function Header() {
         <div className="container flex h-16 items-center justify-between">
           <div className="flex items-center">
             <Link href="/" className="flex items-center space-x-2">
-              <Image
-                src="/placeholder.svg?height=32&width=32"
-                alt="1NativoOne"
-                width={32}
-                height={32}
-                className="h-8 w-8"
-              />
+              <div className="w-7 h-7 rounded-md bg-primary flex items-center justify-center shrink-0">
+                <span className="text-white text-[10px] font-black leading-none">1N</span>
+              </div>
               <span className="text-xl font-bold">1NativoOne</span>
             </Link>
           </div>
@@ -129,17 +125,19 @@ export function Header() {
           </div>
         </div>
       </header>
-      {activeDropdown && (
-        <DropdownMenu
-          variant={activeDropdown}
-          onClose={() => {
-            cancelPendingClose()
-            setActiveDropdown(null)
-          }}
-          onPanelMouseEnter={cancelPendingClose}
-          onPanelMouseLeave={scheduleCloseDropdown}
-        />
-      )}
+      <AnimatePresence>
+        {activeDropdown && (
+          <DropdownMenu
+            variant={activeDropdown}
+            onClose={() => {
+              cancelPendingClose()
+              setActiveDropdown(null)
+            }}
+            onPanelMouseEnter={cancelPendingClose}
+            onPanelMouseLeave={scheduleCloseDropdown}
+          />
+        )}
+      </AnimatePresence>
 
       <MobileNav isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} />
     </>

@@ -25,16 +25,6 @@ export function HeroActions() {
           </Link>
         </Button>
       </motion.div>
-      <Button
-        size="lg"
-        variant="outline"
-        className="w-full sm:w-auto min-h-11 min-w-[44px] bg-background/60 backdrop-blur-sm"
-        asChild
-      >
-        <Link href="#pricing" onClick={() => trackCtaClick("hero_secondary", "Ver precios")}>
-          Ver precios
-        </Link>
-      </Button>
     </div>
   )
 }

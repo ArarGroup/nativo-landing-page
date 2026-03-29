@@ -40,7 +40,7 @@ export default function StickyTabs() {
   }, [])
 
   useEffect(() => {
-    const heroSection = document.getElementById("hero-chaos-clarity")
+    const heroSection = document.getElementById("hero")
     const socialSection = document.getElementById("social-proof")
     const header = document.querySelector("header")
 
@@ -85,48 +85,48 @@ export default function StickyTabs() {
           isSticky ? "fixed top-16 left-0 right-0" : "relative"
         )}
       >
-      <div className="py-1">
-        <div className="flex justify-center overflow-x-auto py-2 px-2">
-          <div
-            className="flex space-x-1 lg:space-x-2 p-1 lg:px-4 rounded-full bg-white shadow-sm border max-w-full"
-            role="tablist"
-            aria-label="Secciones del producto"
-          >
-            {STICKY_TABS.map((tab) => (
-              <Link
-                key={tab.href}
-                href={tab.href}
-                role="tab"
-                aria-selected={activeTab === tab.href}
-                className={cn(
-                  "px-3 lg:px-4 py-2 text-sm font-medium rounded-full whitespace-nowrap transition-all min-h-9 inline-flex items-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
-                  activeTab === tab.href
-                    ? "bg-primary/10 text-primary"
-                    : "text-gray-600 hover:text-gray-900"
-                )}
-                onClick={(e) => {
-                  e.preventDefault()
-                  setActiveTab(tab.href)
-                  const element = document.querySelector(tab.href)
-                  if (element) {
-                    const headerHeight = document.querySelector("header")?.offsetHeight || 0
-                    const tabsHeight = (barRef.current?.offsetHeight ?? barHeight) || 52
-                    const offset = headerHeight + tabsHeight
+        <div className="pt-1">
+          <div className="flex justify-center overflow-x-auto py-2 px-2">
+            <div
+              className="flex space-x-1 lg:space-x-2 p-1 lg:px-4 rounded-full bg-white shadow-sm border max-w-full"
+              role="tablist"
+              aria-label="Secciones del producto"
+            >
+              {STICKY_TABS.map((tab) => (
+                <Link
+                  key={tab.href}
+                  href={tab.href}
+                  role="tab"
+                  aria-selected={activeTab === tab.href}
+                  className={cn(
+                    "px-3 lg:px-4 py-2 text-sm font-medium rounded-full whitespace-nowrap transition-all min-h-9 inline-flex items-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+                    activeTab === tab.href
+                      ? "bg-primary/10 text-primary"
+                      : "text-gray-600 hover:text-gray-900"
+                  )}
+                  onClick={(e) => {
+                    e.preventDefault()
+                    setActiveTab(tab.href)
+                    const element = document.querySelector(tab.href)
+                    if (element) {
+                      const headerHeight = document.querySelector("header")?.offsetHeight || 0
+                      const tabsHeight = (barRef.current?.offsetHeight ?? barHeight) || 52
+                      const offset = headerHeight + tabsHeight
 
-                    const elementPosition = element.getBoundingClientRect().top + window.scrollY
-                    window.scrollTo({
-                      top: elementPosition - offset,
-                      behavior: "smooth",
-                    })
-                  }
-                }}
-              >
-                {tab.label}
-              </Link>
-            ))}
+                      const elementPosition = element.getBoundingClientRect().top + window.scrollY
+                      window.scrollTo({
+                        top: elementPosition - offset,
+                        behavior: "smooth",
+                      })
+                    }
+                  }}
+                >
+                  {tab.label}
+                </Link>
+              ))}
+            </div>
           </div>
         </div>
-      </div>
       </div>
     </div>
   )

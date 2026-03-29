@@ -1,6 +1,7 @@
 "use client"
 
 import Link from "next/link"
+import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
 
 interface MenuItem {
@@ -92,34 +93,64 @@ const solutionSections: MenuSection[] = [
 export function DropdownMenu({ variant, onClose, onPanelMouseEnter, onPanelMouseLeave }: DropdownMenuProps) {
   const menuSections = variant === "products" ? productSections : solutionSections
 
+  const itemVariants = {
+    hidden: { opacity: 0, y: 6 },
+    visible: (i: number) => ({
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.25, ease: [0.22, 1, 0.36, 1], delay: i * 0.05 },
+    }),
+  }
+
   return (
     <>
-      <div className="fixed inset-0 z-30 bg-black/30" onClick={onClose} aria-hidden />
-      <div
+      <motion.div
+        className="fixed inset-0 z-30 bg-black/30"
+        onClick={onClose}
+        aria-hidden
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.2 }}
+      />
+      <motion.div
         role="dialog"
         aria-label={variant === "products" ? "Menú productos" : "Menú soluciones"}
         onMouseEnter={onPanelMouseEnter}
         onMouseLeave={onPanelMouseLeave}
-        className="fixed top-24 lg:top-16 left-0 w-full bg-white border-t border-b shadow-md z-[60] animate-fadeIn hidden md:block"
+        className="fixed top-24 lg:top-16 left-0 w-full bg-white border-t border-b shadow-md z-[60] hidden md:block"
+        initial={{ opacity: 0, y: -8 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -8 }}
+        transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
       >
         <div className="container py-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {menuSections.map((section) => (
               <div key={section.title}>
                 <h3 className="text-xs font-semibold text-gray-500 mb-4">{section.title}</h3>
-                <ul className="space-y-4">
-                  {section.items.map((item) => (
-                    <li key={item.title}>
-                      <Link href={item.href} className="block rounded-md outline-none focus-visible:ring-2 focus-visible:ring-ring" onClick={onClose}>
-                        <div className="font-medium text-gray-900">{item.title}</div>
-                        <div className="text-sm text-gray-500">{item.description}</div>
+                <ul className="space-y-1">
+                  {section.items.map((item, i) => (
+                    <motion.li key={item.title} custom={i} initial="hidden" animate="visible" variants={itemVariants}>
+                      <Link
+                        href={item.href}
+                        className="group block rounded-lg px-3 py-2.5 outline-none focus-visible:ring-2 focus-visible:ring-ring transition-colors hover:bg-slate-50"
+                        onClick={onClose}
+                      >
+                        <div className="font-medium text-gray-900 transition-colors group-hover:text-primary">{item.title}</div>
+                        <div className="text-sm text-gray-500 mt-0.5">{item.description}</div>
                       </Link>
-                    </li>
+                    </motion.li>
                   ))}
                 </ul>
               </div>
             ))}
-            <div className="bg-muted rounded-lg p-6 flex flex-col justify-between md:col-span-1">
+            <motion.div
+              className="bg-muted rounded-lg p-6 flex flex-col justify-between md:col-span-1"
+              initial={{ opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+            >
               <div>
                 <h3 className="text-lg font-medium">¿Listo para evaluar NativoOne?</h3>
                 <p className="mt-2 text-sm text-muted-foreground">
@@ -131,10 +162,10 @@ export function DropdownMenu({ variant, onClose, onPanelMouseEnter, onPanelMouse
                   </Link>
                 </Button>
               </div>
-            </div>
+            </motion.div>
           </div>
         </div>
-      </div>
+      </motion.div>
     </>
   )
 }
